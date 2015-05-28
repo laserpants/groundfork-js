@@ -136,7 +136,7 @@ Api.prototype.pushToLog = function(orig) {
     var action = {},
         log = this._storage.getItem('_log') || [];
     for (var key in orig) 
-        if ('status' != key && 'command' != key)
+        if ('data' != key && 'status' != key && 'command' != key)
             action[key] = orig[key];
     if (orig.command) {
         action.up = orig.command.up;
@@ -517,7 +517,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError) {
             if (this._onRequestComplete) {
                 this._onRequestComplete(); 
             }
-        },
+        }.bind(this),
         success: function(resp) {
             if (this._onRequestComplete) {
                 this._onRequestComplete(); 
