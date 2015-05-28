@@ -148,15 +148,18 @@ Api.prototype.pushToLog = function(orig) {
     this._storage.insertItem('_log', log);
 };
 
-Api.prototype._route = function(request) {
+Api.prototype._route = function(request, store) {
+    if (!store) {
+        store = this._storage;
+    }
     for (var key in this._patternMap) {
         var route   = this._patternMap[key],
             context = route.pattern.match(request.method + '/' + request.resource);
         if (context) {
             if ('POST' == request.method && !getSelfHref(request.payload)) {
-                setSelfHref(request.payload, this._storage.firstAvailableKey(request.resource));
+                setSelfHref(request.payload, store.firstAvailableKey(request.resource));
             }
-            var method = route.method.bind(this._storage),
+            var method = route.method.bind(store),
                 response = method(context, request);
             if (response.status === ApiResponse.TYPE_ERROR) {
                 if (true == this._debugMode) {
@@ -245,6 +248,92 @@ Api.prototype.route = function(request) {
     return this._route(request);
 };
 
+function StorageProxy(storage) {
+    this._storage = storage;
+    var obj = {},
+        keys = storage.keys();
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        obj[key] = this._storage.getItem(key);
+    }
+    this._data = obj;
+}
+
+StorageProxy.prototype.deploy = function() {
+    for (var key in this._data) {
+        this._storage.insertItem(key, this._data[key]);
+    }
+};
+
+StorageProxy.prototype.updateCollectionWith = function(key, update) {
+    var collection = this._data[key];
+    if (!collection) {
+        collection = {
+            "_links": {
+                "self": {"href": key}
+            },
+            "_embedded": {},
+            "count": 0
+        };
+        collection['_embedded'][key] = [];
+    }
+    update(collection);
+    this._data[key] = collection;
+};
+
+StorageProxy.prototype.expandLinks = function(item) {
+    if ('object' === typeof item && item.hasOwnProperty('_links')) {
+        for (var key in item['_links']) {
+            if ('self' == key || !item['_links'][key].href)
+                continue;
+            var ref = item['_links'][key].href;
+            if (this._data.hasOwnProperty(ref)) {
+                var data = this._data[ref];
+                if (data) {
+                    if (!item.hasOwnProperty('_embedded'))
+                        item['_embedded'] = {};
+                    item['_embedded'][key] = data;
+                }
+            }
+        }
+    }
+};
+
+StorageProxy.prototype.insertItem = function(key, value, expand) {
+    if (true === expand)
+        this.expandLinks(value);
+    this._data[key] = value;
+};
+
+StorageProxy.prototype.getItem = function(key) {
+    return this._data[key];
+};
+
+StorageProxy.prototype.removeItem = function(key) {
+    delete this._data[key];
+};
+
+StorageProxy.prototype.hasItem = function(key) {
+    return this._data.hasOwnProperty(key);
+};
+
+StorageProxy.prototype.addToCollection = function(key, value) {
+    var addToCollection = this._storage.addToCollection.bind(this); 
+    return addToCollection(key, value);
+};
+
+StorageProxy.prototype.removeFromCollection = function(key, value) {
+    var removeFromCollection = this._storage.removeFromCollection.bind(this);
+    return removeFromCollection(key, value);
+};
+
+StorageProxy.prototype.firstAvailableKey = function(resource) {
+    var i = 1;
+    while (this.hasItem(resource + '/' + i))
+        i++;
+    return resource + '/' + i;
+};
+
 Api.prototype.batchRun = function(batch, onComplete) {
     if (true == this._busyStatus) {
         return false;
@@ -253,9 +342,11 @@ Api.prototype.batchRun = function(batch, onComplete) {
     if (this._onBatchJobStart) {
         this._onBatchJobStart(); 
     }
-    var messages = [];
+    var messages = [],
+        memstore = new StorageProxy(this._storage);
     var processOne = function() {
         if (!batch.length) {
+            memstore.deploy();
             this._busyStatus = false;
             if (this._onBatchJobComplete) {
                 this._onBatchJobComplete(); 
@@ -265,8 +356,9 @@ Api.prototype.batchRun = function(batch, onComplete) {
             }
             return;
         }
+        console.log('<' + batch.length + '>');
         var req = batch[0],
-            response = this._route(req);
+            response = this._route(req, memstore);
         if (true == this._debugMode)
             console.log(response);
         if (response.status === ApiResponse.TYPE_ERROR) {
@@ -419,6 +511,17 @@ BrowserStorage.prototype.firstAvailableKey = function(resource) {
         i++;
     return resource + '/' + i;
 };
+
+BrowserStorage.prototype.keys = function() {
+    var keys = [],
+        len = this.namespace.length + 1;
+    for (var key in localStorage) {
+        if (0 == key.indexOf(this.namespace)) {
+            keys.push(key.substr(len));
+        }
+    }
+    return keys;
+}
 
 function decorate(obj, items) {
     if ('object' !== typeof obj)
