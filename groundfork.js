@@ -260,6 +260,13 @@ function StorageProxy(storage) {
 }
 
 StorageProxy.prototype.deploy = function() {
+    var keys = this._storage.keys();
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (!this._data.hasOwnProperty(key)) {
+            this._storage.removeItem(key);
+        }
+    }
     for (var key in this._data) {
         this._storage.insertItem(key, this._data[key]);
     }
