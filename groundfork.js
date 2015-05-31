@@ -662,4 +662,4 @@ module.exports = {
     ApiResponse       : ApiResponse,
     BasicHttpEndpoint : BasicHttpEndpoint,
     BrowserStorage    : BrowserStorage
-};
+}; 
