@@ -21,6 +21,7 @@ var defaultPatterns = {
     "POST/:resource": function(context, request) {
         var payload = request.payload,
             uri = getSelfHref(payload);
+        payload._local = true;
         this.insertItem(uri, payload, true);
         this.addToCollection(context.resource, uri);
         return {
@@ -144,6 +145,7 @@ Api.prototype.pushToLog = function(orig) {
     }
     action.index = log.length + 1;
     action.timestamp = Date.now() / 1000 | 0;
+    delete action._local;
     log.push(action);
     this._storage.insertItem('_log', log);
 };
@@ -341,7 +343,7 @@ StorageProxy.prototype.firstAvailableKey = function(resource) {
     return resource + '/' + i;
 };
 
-Api.prototype.batchRun = function(batch, onComplete) {
+Api.prototype.batchRun = function(batch, onComplete, onProgress) {
     if (true == this._busyStatus) {
         return false;
     }
@@ -350,8 +352,12 @@ Api.prototype.batchRun = function(batch, onComplete) {
         this._onBatchJobStart(); 
     }
     var messages = [],
-        memstore = new StorageProxy(this._storage);
+        memstore = new StorageProxy(this._storage),
+        len = batch.length;
     var processOne = function() {
+        if ('function' === typeof onProgress) {
+            onProgress(len-batch.length, len);
+        }
         if (!batch.length) {
             memstore.deploy();
             this._busyStatus = false;
@@ -585,7 +591,7 @@ function BasicHttpEndpoint(config) {
 
 }
 
-BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError) {
+BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgress) {
     if (true == this._device.isBusy()) {
         return false;
     }
@@ -644,7 +650,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError) {
                 if ('function' === typeof onSuccess) {
                     onSuccess(messages, resp);
                 }
-            });
+            }, onProgress);
             this._device.setSyncPoint(resp.syncPoint);
         }.bind(this)
     });
