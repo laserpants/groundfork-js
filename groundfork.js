@@ -21,7 +21,6 @@ var defaultPatterns = {
     "POST/:resource": function(context, request) {
         var payload = request.payload,
             uri = getSelfHref(payload);
-        payload._local = true;
         this.insertItem(uri, payload, true);
         this.addToCollection(context.resource, uri);
         return {
@@ -142,10 +141,11 @@ Api.prototype.pushToLog = function(orig) {
     if (orig.command) {
         action.up = orig.command.up;
         action.down = orig.command.down;
+        if (action.up.hasOwnProperty('payload') && action.up.payload.hasOwnProperty('_local'))
+            delete action.up.payload._local;
     }
     action.index = log.length + 1;
     action.timestamp = Date.now() / 1000 | 0;
-    delete action._local;
     log.push(action);
     this._storage.insertItem('_log', log);
 };
