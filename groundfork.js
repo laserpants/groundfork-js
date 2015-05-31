@@ -645,6 +645,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError) {
 
 module.exports = {
     Api               : Api,
+    ApiResponse       : ApiResponse,
     BasicHttpEndpoint : BasicHttpEndpoint,
     BrowserStorage    : BrowserStorage
 };
