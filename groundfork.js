@@ -363,7 +363,8 @@ Api.prototype.batchRun = function(batch, onComplete) {
             }
             return;
         }
-        console.log('<' + batch.length + '>');
+        if (true == this._debugMode)
+            console.log('<' + batch.length + '>');
         var req = batch[0],
             response = this._route(req, memstore);
         if (true == this._debugMode)
