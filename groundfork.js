@@ -256,7 +256,9 @@ function StorageProxy(storage) {
         keys = storage.keys();
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        obj[key] = this._storage.getItem(key);
+        if (key.indexOf('_') != 0) {
+            obj[key] = this._storage.getItem(key);
+        }
     }
     this._data = obj;
 }
@@ -265,7 +267,7 @@ StorageProxy.prototype.deploy = function() {
     var keys = this._storage.keys();
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (!this._data.hasOwnProperty(key)) {
+        if (!this._data.hasOwnProperty(key) && key.indexOf('_') != 0) {
             this._storage.removeItem(key);
         }
     }
