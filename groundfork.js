@@ -87,7 +87,10 @@ var defaultPatterns = {
 };
 
 function setSelfHref(obj, uri) {
-    extend(obj, {"_links":{"self":{"href": uri}}});
+    if (!obj.hasOwnProperty('_links')) {
+        obj['_links'] = {"self": null};
+    }
+    obj['_links']['self'] = {"href": uri};
 }
 
 function getSelfHref(obj) {
