@@ -303,7 +303,8 @@ StorageProxy.prototype.expandLinks = function(item) {
                 if (data) {
                     if (!item.hasOwnProperty('_embedded'))
                         item['_embedded'] = {};
-                    item['_embedded'][key] = this.expandLinks(data);
+                    this.expandLinks(data);
+                    item['_embedded'][key] = data;
                 }
             }
         }
