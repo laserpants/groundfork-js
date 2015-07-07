@@ -110,8 +110,6 @@ function Api(config) {
     this._debugMode          = false;
     this._interval           = 15;
 
-    this._initPatterns(defaultPatterns);
-
     if (config) {
         if (true === config.debugMode) {
             this._debugMode = true;
@@ -133,6 +131,7 @@ function Api(config) {
         }
     }
 
+    this._initPatterns(defaultPatterns);
 }
 
 Api.prototype.pushToLog = function(orig) {
@@ -347,6 +346,10 @@ StorageProxy.prototype.firstAvailableKey = function(resource) {
     return resource + '/' + i;
 };
 
+StorageProxy.prototype.getSelfHref = function(obj) {
+    return this._storage.getSelfHref(obj);
+};
+
 Api.prototype.batchRun = function(batch, onComplete, onProgress) {
     if (true == this._busyStatus) {
         return false;
@@ -523,6 +526,10 @@ BrowserStorage.prototype.firstAvailableKey = function(resource) {
     while (this.hasItem(resource + '/' + i))
         i++;
     return resource + '/' + i;
+};
+
+BrowserStorage.prototype.getSelfHref = function(obj) {
+    return getSelfHref(obj);
 };
 
 BrowserStorage.prototype.keys = function() {
