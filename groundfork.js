@@ -286,10 +286,9 @@ StorageProxy.prototype.updateCollectionWith = function(key, update) {
             "_links": {
                 "self": {"href": key}
             },
-            "_embedded": {},
             "count": 0
         };
-        collection['_embedded'][key] = [];
+        collection['_links'][key] = [];
     }
     update(collection);
     this._data[key] = collection;
@@ -444,10 +443,9 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
             "_links": {
                 "self": {"href": key}
             },
-            "_embedded": {},
             "count": 0
         };
-    collection['_embedded'][key] = [];
+    collection['_links'][key] = [];
     if (cached) 
         collection = parseWithDefault(cached, collection);
     update(collection);
@@ -495,28 +493,24 @@ BrowserStorage.prototype.hasItem = function(key) {
 
 BrowserStorage.prototype.addToCollection = function(key, value) {
     this.updateCollectionWith(key, function(collection) {
-        var items = collection['_embedded'][key];
+        var items = collection['_links'][key];
         for (var i = 0; i < items.length; i++) {
-            if (items[i]['_links']['self']['href'] === value) 
+            if (items[i].href === value) 
                 return;
         }
-        items.push({
-            "_links": {
-                "self": {"href": value}
-            }
-        });
-        collection['_embedded'][key] = items;
+        items.push({"href": value});
+        collection['_links'][key] = items;
         collection.count++;
     });
 };
 
 BrowserStorage.prototype.removeFromCollection = function(key, value) {
     this.updateCollectionWith(key, function(collection) {
-        var items = collection['_embedded'][key];
+        var items = collection['_links'][key];
         for (var i = 0; i < items.length; i++) {
-            if (items[i]['_links']['self']['href'] === value) {
+            if (items[i].href === value) {
                 items.splice(i, 1);
-                collection['_embedded'][key] = items;
+                collection['_links'][key] = items;
                 collection.count--;
                 return;
             }
