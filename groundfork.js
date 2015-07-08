@@ -168,7 +168,7 @@ Api.prototype._route = function(request, store) {
             if (response.status === ApiResponse.TYPE_ERROR) {
                 if (true == this._debugMode) {
                     console.log(response);
-                    console.log('Conflict: ' + response._error + ' (' + response.resource + ')');
+                    console.log(response._error + ' (' + response.resource + ')');
                 }
                 response.request = request;
                 return response;
