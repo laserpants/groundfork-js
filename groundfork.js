@@ -17,12 +17,33 @@ var ApiResponse = {
     TYPE_ERROR: 'error'
 };
 
+function embed(resource, collection) {
+    var links = collection['_links'][resource],
+        items = [];
+    for (var i = 0; i < links.length; i++) {
+        var item = this.getItem(links[i].href);
+        if (item) {
+            delete item['_embedded'];
+            items.push(item);
+        }
+    }
+    if (!collection.hasOwnProperty('_embedded')) 
+        collection['_embedded'] = {};
+    collection['_embedded'][resource] = items;
+}
+
 var defaultPatterns = {
     "POST/:resource": function(context, request) {
         var payload = request.payload,
-            uri = getSelfHref(payload);
+            uri = getSelfHref(payload),
+            linked = null;
         this.insertItem(uri, payload, true);
-        this.addToCollection(context.resource, uri);
+        if ((linked = getLink(payload, 'collection'))) {
+            this.addToCollection(linked, uri, context.resource);
+            this.updateCollectionWith(linked, embed.bind(this, context.resource));
+        } else {
+            this.addToCollection(context.resource, uri);
+        }
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
             "data"   : payload
@@ -31,7 +52,8 @@ var defaultPatterns = {
     "DELETE/:resource/:id": function(context) {
         var resource = context.resource,
             key = resource + '/' + context.id,
-            item = this.getItem(key);
+            item = this.getItem(key),
+            linked = null;
         if (!item) {
             return { 
                 "status"   : ApiResponse.TYPE_ERROR,
@@ -40,7 +62,12 @@ var defaultPatterns = {
             };
         }
         this.removeItem(key);
-        this.removeFromCollection(resource, key);
+        if ((linked = getLink(item, 'collection'))) {
+            this.removeFromCollection(linked, key, context.resource);
+            this.updateCollectionWith(linked, embed.bind(this, context.resource));
+        } else {
+          this.removeFromCollection(resource, key);
+        }
         return {
             "status"   : ApiResponse.TYPE_SUCCESS,
             "resource" : resource,
@@ -93,10 +120,14 @@ function setSelfHref(obj, uri) {
     obj['_links']['self'] = {"href": uri};
 }
 
-function getSelfHref(obj) {
-    if (!obj || !obj.hasOwnProperty('_links') || !obj['_links'].hasOwnProperty('self'))
+function getLink(obj, resource) {
+    if (!obj || !obj.hasOwnProperty('_links') || !obj['_links'].hasOwnProperty(resource))
         return null;
-    return obj['_links']['self'].href;
+    return obj['_links'][resource].href;
+}
+
+function getSelfHref(obj) {
+    return getLink(obj, 'self');
 }
 
 function Api(config) {
@@ -296,7 +327,7 @@ StorageProxy.prototype.updateCollectionWith = function(key, update) {
 StorageProxy.prototype.expandLinks = function(item) {
     if ('object' === typeof item && item.hasOwnProperty('_links')) {
         for (var key in item['_links']) {
-            if ('self' == key || !item['_links'][key].href)
+            if ('self' === key || 'collection' === key || !item['_links'][key].href)
                 continue;
             var ref = item['_links'][key].href;
             if (this._data.hasOwnProperty(ref)) {
@@ -458,7 +489,7 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
 BrowserStorage.prototype.expandLinks = function(item) {
     if ('object' === typeof item && item.hasOwnProperty('_links')) {
         for (var key in item['_links']) {
-            if ('self' == key || !item['_links'][key].href)
+            if ('self' === key || 'collection' === key || !item['_links'][key].href)
                 continue;
             var cached = localStorage.getItem(this.namespaced(item['_links'][key].href)),
                 data = parseWithDefault(cached, null);
