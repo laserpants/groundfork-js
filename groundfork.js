@@ -37,7 +37,7 @@ var defaultPatterns = {
         var payload = request.payload,
             uri = getSelfHref(payload),
             linked = null;
-        this.insertItem(uri, payload, true);
+        this.insertItem(uri, payload);
         if ((linked = getLink(payload, 'collection'))) {
             this.addToCollection(linked, uri, context.resource);
             this.updateCollectionWith(linked, embed.bind(this, context.resource));
@@ -103,7 +103,7 @@ var defaultPatterns = {
                 "resource" : key 
             };
         }
-        this.insertItem(key, request.payload, true);
+        this.insertItem(key, request.payload);
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
             "data"   : item
@@ -322,27 +322,16 @@ StorageProxy.prototype.updateCollectionWith = function(key, update) {
     this._data[key] = collection;
 };
 
-StorageProxy.prototype.expandLinks = function(item) {
-    if ('object' === typeof item && item.hasOwnProperty('_links')) {
-        for (var key in item['_links']) {
-            if ('self' === key || 'collection' === key || !item['_links'][key].href)
-                continue;
-            var ref = item['_links'][key].href;
-            if (this._data.hasOwnProperty(ref)) {
-                var data = this._data[ref];
-                if (data) {
-                    if (!item.hasOwnProperty('_embedded'))
-                        item['_embedded'] = {};
-                    item['_embedded'][key] = data;
-                }
-            }
-        }
+StorageProxy.prototype.embed = function(obj, link) {
+    this._storage.embed(obj, link);
+    if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
+        var item = this.getItem(item['_links'][link].href);
+        if (item)
+            obj['_embedded'][link] = item; 
     }
 };
 
-StorageProxy.prototype.insertItem = function(key, value, expand) {
-    if (true === expand)
-        this.expandLinks(value);
+StorageProxy.prototype.insertItem = function(key, value) {
     this._data[key] = value;
 };
 
@@ -484,19 +473,11 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
     localStorage.setItem(_key, JSON.stringify(collection));
 };
 
-BrowserStorage.prototype.expandLinks = function(item) {
-    if ('object' === typeof item && item.hasOwnProperty('_links')) {
-        for (var key in item['_links']) {
-            if ('self' === key || 'collection' === key || !item['_links'][key].href)
-                continue;
-            var cached = localStorage.getItem(this.namespaced(item['_links'][key].href)),
-                data = parseWithDefault(cached, null);
-            if (data) {
-                if (!item.hasOwnProperty('_embedded'))
-                    item['_embedded'] = {};
-                item['_embedded'][key] = data;
-            }
-        }
+BrowserStorage.prototype.embed = function(obj, link) {
+    if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
+        var item = this.getItem(item['_links'][link].href);
+        if (item)
+            obj['_embedded'][link] = item; 
     }
 };
 
@@ -504,9 +485,7 @@ BrowserStorage.prototype.namespaced = function(str) {
     return this.namespace ? this.namespace + '.' + str : str;
 };
 
-BrowserStorage.prototype.insertItem = function(key, value, expand) {
-    if (true === expand)
-        this.expandLinks(value);
+BrowserStorage.prototype.insertItem = function(key, value) {
     localStorage.setItem(this.namespaced(key), JSON.stringify(value));
 };
 
