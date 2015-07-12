@@ -41,9 +41,8 @@ var defaultPatterns = {
         if ((linked = getLink(payload, 'collection'))) {
             this.addToCollection(linked, uri, context.resource);
             this.updateCollectionWith(linked, embed.bind(this, context.resource));
-        } else {
-            this.addToCollection(context.resource, uri);
-        }
+        } 
+        this.addToCollection(context.resource, uri);
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
             "data"   : payload
@@ -65,9 +64,8 @@ var defaultPatterns = {
         if ((linked = getLink(item, 'collection'))) {
             this.removeFromCollection(linked, key, context.resource);
             this.updateCollectionWith(linked, embed.bind(this, context.resource));
-        } else {
-          this.removeFromCollection(resource, key);
-        }
+        } 
+        this.removeFromCollection(resource, key);
         return {
             "status"   : ApiResponse.TYPE_SUCCESS,
             "resource" : resource,
