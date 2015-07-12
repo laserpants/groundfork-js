@@ -325,7 +325,7 @@ StorageProxy.prototype.updateCollectionWith = function(key, update) {
 StorageProxy.prototype.embed = function(obj, link) {
     this._storage.embed(obj, link);
     if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
-        var item = this.getItem(item['_links'][link].href);
+        var item = this.getItem(obj['_links'][link].href);
         if (item)
             obj['_embedded'][link] = item; 
     }
@@ -475,7 +475,7 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
 
 BrowserStorage.prototype.embed = function(obj, link) {
     if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
-        var item = this.getItem(item['_links'][link].href);
+        var item = this.getItem(obj['_links'][link].href);
         if (item)
             obj['_embedded'][link] = item; 
     }
