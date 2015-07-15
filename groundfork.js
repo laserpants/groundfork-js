@@ -17,7 +17,7 @@ var ApiResponse = {
     TYPE_ERROR: 'error'
 };
 
-function embed(resource, collection) {
+function embedCollection(resource, collection) {
     var links = collection['_links'][resource],
         items = [];
     for (var i = 0; i < links.length; i++) {
@@ -40,7 +40,7 @@ var defaultPatterns = {
         this.insertItem(uri, payload);
         if ((linked = getLink(payload, 'collection'))) {
             this.addToCollection(linked, uri, context.resource);
-            this.updateCollectionWith(linked, embed.bind(this, context.resource));
+            this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
         this.addToCollection(context.resource, uri);
         return {
@@ -63,7 +63,7 @@ var defaultPatterns = {
         this.removeItem(key);
         if ((linked = getLink(item, 'collection'))) {
             this.removeFromCollection(linked, key, context.resource);
-            this.updateCollectionWith(linked, embed.bind(this, context.resource));
+            this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
         this.removeFromCollection(resource, key);
         return {
@@ -192,8 +192,7 @@ Api.prototype._route = function(request, store) {
             if ('POST' == request.method && !getSelfHref(request.payload)) {
                 setSelfHref(request.payload, store.firstAvailableKey(request.resource));
             }
-            var method = route.method.bind(store),
-                response = method(context, request);
+            var response = route.method.call(store, context, request);
             if (response.status === ApiResponse.TYPE_ERROR) {
                 if (true == this._debugMode) {
                     console.log(response);
@@ -320,18 +319,6 @@ StorageProxy.prototype.updateCollectionWith = function(key, update) {
     }
     update(collection);
     this._data[key] = collection;
-};
-
-StorageProxy.prototype.embed = function(obj, link) {
-    this._storage.embed(obj, link);
-    if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
-        var item = this.getItem(obj['_links'][link].href);
-        if (item) {
-            if (!obj.hasOwnProperty('_embedded'))
-                obj['_embedded'] = {};
-            obj['_embedded'][link] = item; 
-        }
-    }
 };
 
 StorageProxy.prototype.insertItem = function(key, value) {
@@ -478,11 +465,16 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
 
 BrowserStorage.prototype.embed = function(obj, link) {
     if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
-        var item = this.getItem(obj['_links'][link].href);
-        if (item) {
-            if (!obj.hasOwnProperty('_embedded'))
-                obj['_embedded'] = {};
-            obj['_embedded'][link] = item; 
+        var target = obj['_links'][link];
+        if (Array.isArray(target)) {
+            embedCollection.call(this, link, obj);
+        } else {
+            var item = this.getItem(target.href);
+            if (item) {
+                if (!obj.hasOwnProperty('_embedded'))
+                    obj['_embedded'] = {};
+                obj['_embedded'][link] = item;
+            }
         }
     }
 };
