@@ -464,7 +464,7 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
 };
 
 BrowserStorage.prototype.embed = function(obj, link) {
-    if ('object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
+    if (obj && 'object' === typeof obj && obj.hasOwnProperty('_links') && obj['_links'].hasOwnProperty(link)) {
         var target = obj['_links'][link];
         if (Array.isArray(target)) {
             embedCollection.call(this, link, obj);
