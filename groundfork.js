@@ -23,7 +23,7 @@ function embedCollection(resource, collection) {
     for (var i = 0; i < links.length; i++) {
         var item = this.getItem(links[i].href);
         if (item) {
-            delete item['_embedded'];
+            item['_embedded'] = {};
             items.push(item);
         }
     }
@@ -473,6 +473,7 @@ BrowserStorage.prototype.embed = function(obj, link) {
             if (item) {
                 if (!obj.hasOwnProperty('_embedded'))
                     obj['_embedded'] = {};
+                item['_embedded'] = {};
                 obj['_embedded'][link] = item;
             }
         }
