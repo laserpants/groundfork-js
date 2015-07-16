@@ -38,7 +38,7 @@ var defaultPatterns = {
             uri = getSelfHref(payload),
             linked = null;
         this.insertItem(uri, payload);
-        if ((linked = getLink(payload, 'collection'))) {
+        if ((linked = getLink(payload, '_collection'))) {
             this.addToCollection(linked, uri, context.resource);
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
@@ -61,7 +61,7 @@ var defaultPatterns = {
             };
         }
         this.removeItem(key);
-        if ((linked = getLink(item, 'collection'))) {
+        if ((linked = getLink(item, '_collection'))) {
             this.removeFromCollection(linked, key, context.resource);
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
