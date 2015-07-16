@@ -1,6 +1,11 @@
 var $ = require('jquery');
 var UrlPattern = require('url-pattern');
 
+if (typeof localStorage === 'undefined' || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
 function extend() {
     for (var i = 1; i < arguments.length; i++) {
         for (var key in arguments[i]) {
