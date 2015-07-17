@@ -579,8 +579,9 @@ function decorate(obj, items) {
             decorate(obj[key], items);
         } else if ('string' === typeof obj[key] && ('href' == key || 'resource' == key)) {
             for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                obj[key] = obj[key].replace(item, '||' + item + '||');
+                var item  = items[i],
+                    regex = new RegExp(item + '(/.*)?$');
+                obj[key] = obj[key].replace(regex, '||' + item + '||$1');
             }
         }
     }
