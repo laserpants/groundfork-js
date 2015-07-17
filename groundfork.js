@@ -47,6 +47,20 @@ var defaultPatterns = {
             this.addToCollection(linked, uri, context.resource);
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
+        if ((linked = getLink(payload, '_parent'))) {
+            this.updateCollectionWith(linked, function(collection) {
+                if (!collection.hasOwnProperty('_links')) 
+                    collection['_links'] = {};
+                collection['_links'][context.resource] = uri;
+                var item = this.getItem(uri);
+                if (item) {
+                    if (!collection.hasOwnProperty('_embedded')) 
+                        collection['_embedded'] = {};
+                    item['_embedded'] = {};
+                    collection['_embedded'][context.resource] = item;
+                }
+            }.bind(this));
+        }
         this.addToCollection(context.resource, uri);
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
@@ -70,6 +84,16 @@ var defaultPatterns = {
             this.removeFromCollection(linked, key, context.resource);
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
+        if ((linked = getLink(payload, '_parent'))) {
+            this.updateCollectionWith(linked, function(collection) {
+                if (collection.hasOwnProperty('_links')) {
+                    delete collection['_links'][context.resource];
+                }
+                if (collection.hasOwnProperty('_embedded')) {
+                    delete collection['_embedded'][context.resource];
+                }
+            });
+        }
         this.removeFromCollection(resource, key);
         return {
             "status"   : ApiResponse.TYPE_SUCCESS,
