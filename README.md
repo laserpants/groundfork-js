@@ -69,7 +69,7 @@ var store = new GroundFork.BrowserStorage({
 });
 ```
 
-| Property            | Default   | Required? | Type      |   |   |
+| Property            | Default   | Required? | Type      |   | Description  |
 |---------------------|-----------|-----------|-----------|---|---|
 | namespace           |           | required  | string    |   | A prefix used for local storage key names. |
 
@@ -81,7 +81,7 @@ var api = new GroundFork.Api(config);
 
 ### Config keys
 
-| Property            | Default   | Required? | Type     |   |
+| Property            | Default   | Required? | Type     | Description  |
 |---------------------|-----------|-----------|----------|---|
 | debugMode           | false     |           | boolean  | Enables logging of various debug data to the console. |
 | patterns            |           |           | object   |   |
@@ -108,7 +108,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 
 ### Config keys
 
-| Property            | Default                 | Required? | Type      |   |
+| Property            | Default                 | Required? | Type      | Description  |
 |---------------------|-------------------------|-----------|-----------|---|
 | api                 |                         | required  | object    |   |
 | clientKey           |                         | required  | string    |   |
