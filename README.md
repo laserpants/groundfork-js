@@ -7,18 +7,20 @@ JavaScript-client for building offline-capable web applications using the Ground
 A typical implementation entails three parts:
 
 * storage,
-* api, and a
-* synchronization endpoint.
-
-Application resources are exposed through a client-side REST interface which encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, when connectivity is available. 
-
-##### Endpoint
-
-The synchronization endpoint points to a running GroundFork Antenna (https://github.com/johanneshilden/groundfork-antenna-postgres) service.
+* a synchronization endpoint, and the
+* api.
 
 ##### Storage
 
-The library contains a default backend for the browser's local storage object.
+The device cache. The library contains a default backend using the browser's local storage object. 
+
+##### Endpoint
+
+Points to a running GroundFork Antenna (https://github.com/johanneshilden/groundfork-antenna-postgres) service which is used for synchronization, when connectivity is available. 
+
+##### Api
+
+Application resources are exposed through a client-side REST interface that encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, 
 
 #### Contrived example
 
