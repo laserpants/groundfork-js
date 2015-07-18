@@ -39,6 +39,16 @@ onBatchJobComplete
 interval
 ```
 
+### command (request)
+
+### isBusy ()
+
+### syncPoint ()
+
+### setSyncPoint (ts)
+
+### log ()
+
 ## Endpoint
 
 ```
@@ -62,3 +72,5 @@ syncSuffix            default: 'sync'
 url                   default: 'http://localhost:3333'
 requestHandler
 ```
+
+### sync (target, onSuccess, onError, onProgress)
