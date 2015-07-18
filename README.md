@@ -16,9 +16,9 @@ var store = new GroundFork.BrowserStorage({
 });
 ```
 
-```
-namespace
-```
+|                     |   |   |   |   |
+|---------------------|---|---|---|---|
+| namespace           |   |   |   |   |
 
 ## Api
 
@@ -30,20 +30,15 @@ var api = new GroundFork.Api({
 });
 ```
 
-|             |   |   |   |   |
-|-------------|---|---|---|---|
-| debugMode   |   |   |   |   |
-| patterns    |   |   |   |   |
-| storage     |   |   |   |   |
+|                     |   |   |   |   |
+|---------------------|---|---|---|---|
+| debugMode           |   |   |   |   |
+| patterns            |   |   |   |   |
+| storage             |   |   |   |   |
+| onBatchJobStart     |   |   |   |   |
+| onBatchJobComplete  |   |   |   |   |
+| interval            |   |   |   |   |
 
-```
-debugMode
-patterns
-storage
-onBatchJobStart
-onBatchJobComplete
-interval
-```
 
 ### command (request)
 
@@ -68,15 +63,15 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
 });
 ```
 
-```
-api
-clientKey
-clientSecret
-onRequestStart
-onRequestComplete
-syncSuffix            default: 'sync'
-url                   default: 'http://localhost:3333'
-requestHandler
-```
+|                     |                         |   |   |   |
+|---------------------|-------------------------|---|---|---|
+| api                 |                         |   |   |   |
+| clientKey           |                         |   |   |   |
+| clientSecret        |                         |   |   |   |
+| onRequestStart      |                         |   |   |   |
+| onRequestComplete   |                         |   |   |   |
+| syncSuffix          | 'sync'                  |   |   |   |
+| url                 | 'http://localhost:3333' |   |   |   |
+| requestHandler      |                         |   |   |   | 
 
 ### sync (target, onSuccess, onError, onProgress)
