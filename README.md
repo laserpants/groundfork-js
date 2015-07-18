@@ -8,7 +8,7 @@ A typical implementation entails three abstractions:
 * api, and a
 * synchronization endpoint.
 
-Application resources are exposed through a client-side REST interface, which encapsulates commands in a format suitable for logging. Resources are stored on the device and can subsequently be synchronized with other devices, when connectivity is available. 
+Application resources are exposed through a client-side REST interface which encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, when connectivity is available. 
 
 #### Contrived example
 
