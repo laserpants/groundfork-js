@@ -43,20 +43,20 @@ var GroundFork = require('groundfork-js');
 
 ## Storage
 
-|                     |          |   |   |   |
-|---------------------|----------|---|---|---|
-| namespace           | required |   |   |   |
+|                     |  |          |        |   |   |
+|---------------------|--|----------|--------|---|---|
+| namespace           |  | required | string |   |   |
 
 ## Api
 
-|                     |           |           |   |   |
-|---------------------|-----------|-----------|---|---|
-| debugMode           |           |           |   |   |
-| patterns            |           |           |   |   |
-| storage             |           | required  |   |   |
-| onBatchJobStart     |           |           |   |   |
-| onBatchJobComplete  |           |           |   |   |
-| interval            |           |           |   |   |
+|                     |           |           |          |   |
+|---------------------|-----------|-----------|----------|---|
+| debugMode           | false     |           | boolean  |   |
+| patterns            |           |           |          |   |
+| storage             |           | required  |          |   |
+| onBatchJobStart     |           |           | function |   |
+| onBatchJobComplete  |           |           | function |   |
+| interval            | 15        |           | number   |   |
 
 
 #### command (request)
@@ -71,15 +71,15 @@ var GroundFork = require('groundfork-js');
 
 ## Endpoint
 
-|                     |                         |           |   |   |
-|---------------------|-------------------------|-----------|---|---|
-| api                 |                         | required  |   |   |
-| clientKey           |                         | required  |   |   |
-| clientSecret        |                         | required  |   |   |
-| onRequestStart      |                         |           |   |   |
-| onRequestComplete   |                         |           |   |   |
-| syncSuffix          | 'sync'                  |           |   |   |
-| url                 | 'http://localhost:3333' |           |   |   |
-| requestHandler      |                         |           |   |   | 
+|                     |                         |           |           |   |
+|---------------------|-------------------------|-----------|-----------|---|
+| api                 |                         | required  |           |   |
+| clientKey           |                         | required  | string    |   |
+| clientSecret        |                         | required  | string    |   |
+| onRequestStart      |                         |           | function  |   |
+| onRequestComplete   |                         |           | function  |   |
+| syncSuffix          | 'sync'                  |           | string    |   |
+| url                 | 'http://localhost:3333' |           | string    |   |
+| requestHandler      |                         |           |           |   | 
 
 #### sync (target, onSuccess, onError, onProgress)
