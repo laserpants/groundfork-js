@@ -4,7 +4,7 @@ JavaScript-client for building offline-capable web applications using the Ground
 
 > under construction
 
-A typical implementation entails three abstractions:
+A typical implementation entails three parts:
 
 * storage,
 * api, and a
