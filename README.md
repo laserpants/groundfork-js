@@ -29,7 +29,9 @@ api.command({
    }
 });
 
-endpoint.sync(['target-node'], function onSuccess() { /* ... */ }, function onError(err) { /* ... */ });
+endpoint.sync(['target-node'], 
+    function onSuccess() { /* ... */ }, 
+    function onError(err) { /* ... */ });
 
 ```
 
