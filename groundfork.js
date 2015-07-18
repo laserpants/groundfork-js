@@ -85,7 +85,7 @@ var defaultPatterns = {
             this.removeFromCollection(linked, key, context.resource);
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
-        if ((linked = getLink(payload, '_parent'))) {
+        if ((linked = getLink(item, '_parent'))) {
             this.updateCollectionWith(linked, function(collection) {
                 if (collection.hasOwnProperty('_links')) {
                     delete collection['_links'][context.resource];
