@@ -16,7 +16,7 @@ The synchronization endpoint points to a running GroundFork Antenna (https://git
 
 ##### Storage
 
-The library contains a default storage backend for the browser's local storage object.
+The library contains a default backend for the browser's local storage object.
 
 #### Contrived example
 
