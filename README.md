@@ -30,6 +30,12 @@ var api = new GroundFork.Api({
 });
 ```
 
+|             |   |   |   |   |
+|-------------|---|---|---|---|
+| debugMode   |   |   |   |   |
+| patterns    |   |   |   |   |
+| storage     |   |   |   |   |
+
 ```
 debugMode
 patterns
