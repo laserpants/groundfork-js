@@ -2,6 +2,8 @@
 
 JavaScript-client for building offline-capable web applications using the GroundFork synchronization framework.
 
+> under construction
+
 A typical implementation entails three abstractions:
 
 * storage,
@@ -52,8 +54,6 @@ endpoint.sync(['target-node'],
     function onError(err) { /* ... */ });
 
 ```
-
-> under construction
 
 ```
 var GroundFork = require('groundfork-js');
