@@ -43,9 +43,9 @@ var GroundFork = require('groundfork-js');
 
 ## Storage
 
-|                     |  |          |        |   |   |
-|---------------------|--|----------|--------|---|---|
-| namespace           |  | required | string |   |   |
+|                     |    |          |        |   |   |
+|---------------------|----|----------|--------|---|---|
+| namespace           |    | required | string |   |   |
 
 ## Api
 
