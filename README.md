@@ -16,11 +16,11 @@ The device cache. The library contains a default backend, operating on the brows
 
 ##### Endpoint
 
-Points to a running GroundFork Antenna (https://github.com/johanneshilden/groundfork-antenna-postgres) service which is used for synchronization, when connectivity is available. 
+Points to a running GroundFork Antenna (https://github.com/johanneshilden/groundfork-antenna-postgres). The endpoint is used for synchronization, when connectivity is available. 
 
 ##### Api
 
-Application resources are exposed through a client-side REST interface that encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, 
+Application resources are exposed through a client-side REST interface which encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, 
 
 #### Contrived example
 
