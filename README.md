@@ -69,9 +69,9 @@ var store = new GroundFork.BrowserStorage({
 });
 ```
 
-| Property            | Default   | Required? | Type      |   | Description  |
-|---------------------|-----------|-----------|-----------|---|---|
-| namespace           |           | required  | string    |   | A prefix used for local storage key names. |
+| Property            | Default   | Required? | Type      |  Description  |
+|---------------------|-----------|-----------|-----------|----|
+| namespace           |           | required  | string    | A prefix used for local storage key names. |
 
 ## Api
 
