@@ -71,7 +71,7 @@ var store = new GroundFork.BrowserStorage({
 
 | Property            | Default   | Required? | Type      |   |   |
 |---------------------|-----------|-----------|-----------|---|---|
-| namespace           |           | required  | string    |   |   |
+| namespace           |           | required  | string    |   | A prefix used for local storage key names. |
 
 ## Api
 
@@ -83,12 +83,12 @@ var api = new GroundFork.Api(config);
 
 | Property            | Default   | Required? | Type     |   |
 |---------------------|-----------|-----------|----------|---|
-| debugMode           | false     |           | boolean  |   |
-| patterns            |           |           |          |   |
-| storage             |           | required  |          |   |
+| debugMode           | false     |           | boolean  | Enables logging of various debug data to the console. |
+| patterns            |           |           | object   |   |
+| storage             |           | required  | object   | A GroundFork.Storage instance. |
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
-| interval            | 15        |           | number   |   |
+| interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
 
 #### command (request)
 
@@ -110,13 +110,13 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 
 | Property            | Default                 | Required? | Type      |   |
 |---------------------|-------------------------|-----------|-----------|---|
-| api                 |                         | required  |           |   |
+| api                 |                         | required  | object    |   |
 | clientKey           |                         | required  | string    |   |
 | clientSecret        |                         | required  | string    |   |
 | onRequestStart      |                         |           | function  |   |
 | onRequestComplete   |                         |           | function  |   |
 | syncSuffix          | 'sync'                  |           | string    |   |
 | url                 | 'http://localhost:3333' |           | string    |   |
-| requestHandler      |                         |           |           |   | 
+| requestHandler      |                         |           | function  | Default is to use jQuery's $.ajax api. Note that for node implementations, a different request handler must be provided. | 
 
 #### sync (target, onSuccess, onError, onProgress)
