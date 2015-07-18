@@ -43,13 +43,25 @@ var GroundFork = require('groundfork-js');
 
 ## Storage
 
+```
+var store = new GroundFork.BrowserStorage({
+    namespace: 'myApp'
+});
+```
+
 |                     |    |          |        |   |   |
 |---------------------|----|----------|--------|---|---|
 | namespace           |    | required | string |   |   |
 
 ## Api
 
-|                     |           |           |          |   |
+```
+var api = new GroundFork.Api(config);
+```
+
+### Config keys
+
+| Property            | Default   | Required? | Type     |   |
 |---------------------|-----------|-----------|----------|---|
 | debugMode           | false     |           | boolean  |   |
 | patterns            |           |           |          |   |
@@ -57,7 +69,6 @@ var GroundFork = require('groundfork-js');
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
 | interval            | 15        |           | number   |   |
-
 
 #### command (request)
 
@@ -71,7 +82,13 @@ var GroundFork = require('groundfork-js');
 
 ## Endpoint
 
-|                     |                         |           |           |   |
+```
+var endpoint = new GroundFork.BasicHttpEndpoint(config);
+```
+
+### Config keys
+
+| Property            | Default                 | Required? | Type      |   |
 |---------------------|-------------------------|-----------|-----------|---|
 | api                 |                         | required  |           |   |
 | clientKey           |                         | required  | string    |   |
