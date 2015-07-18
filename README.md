@@ -2,7 +2,7 @@
 
 Synchronization framework for ground computing
 
-<under construction>
+> under construction
 
 ```
 var GroundFork = require('groundfork-js');
