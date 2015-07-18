@@ -2,6 +2,8 @@
 
 JavaScript-client for building offline-capable web applications using the GroundFork synchronization framework.
 
+#### Contrived example
+
 ```
 var store = new GroundFork.BrowserStorage({
     namespace : 'myApp'
@@ -26,6 +28,9 @@ api.command({
        ingredients : ['Cottage Cheese', 'Lemon Juice', 'Ginger-Garlic Paste', 'Red Chili Powder']
    }
 });
+
+endpoint.sync(['target-node'], function onSuccess() { /* ... */ }, function onError(err) { /* ... */ });
+
 ```
 
 > under construction
