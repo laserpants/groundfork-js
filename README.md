@@ -2,8 +2,63 @@
 
 Synchronization framework for ground computing
 
-## GroundFork.Storage
+<under construction>
 
-## GroundFork.Api
+```
+var GroundFork = require('groundfork-js');
+```
 
-## GroundFork.Endpoint
+## Storage
+
+```
+var store = new GroundFork.BrowserStorage({
+    namespace : 'myApp'
+});
+```
+
+```
+namespace
+```
+
+## Api
+
+```
+var api = new GroundFork.Api({
+    storage            : store,
+    onBatchJobStart    : function() {},
+    onBatchJobComplete : function() {}
+});
+```
+
+```
+debugMode
+patterns
+storage
+onBatchJobStart
+onBatchJobComplete
+interval
+```
+
+## Endpoint
+
+```
+var endpoint = new GroundFork.BasicHttpEndpoint({
+    api               : api,
+    url               : 'http://localhost:3333/',
+    clientKey         : 'root-user',
+    clientSecret      : 'password',
+    onRequestStart    : function() {},
+    onRequestComplete : function() {}
+});
+```
+
+```
+api
+clientKey
+clientSecret
+onRequestStart
+onRequestComplete
+syncSuffix            default: 'sync'
+url                   default: 'http://localhost:3333'
+requestHandler
+```
