@@ -33,8 +33,12 @@ function embedCollection(resource, collection) {
     for (var i = 0; i < links.length; i++) {
         var item = this.getItem(links[i].href);
         if (item) {
-            item['_embedded'] = {};
-            items.push(item);
+            var _item = {};
+            for (var key in item) {
+                if ('_embedded' !== key) 
+                    _item[key] = item[key];
+            }
+            items.push(_item);
         }
     }
     if (!collection.hasOwnProperty('_embedded')) 
@@ -61,8 +65,12 @@ var defaultPatterns = {
                 if (item) {
                     if (!collection.hasOwnProperty('_embedded')) 
                         collection['_embedded'] = {};
-                    item['_embedded'] = {};
-                    collection['_embedded'][context.resource] = item;
+                    var _item = {};
+                    for (var key in item) {
+                        if ('_embedded' !== key) 
+                            _item[key] = item[key];
+                    }
+                    collection['_embedded'][context.resource] = _item;
                 }
             }.bind(this));
         }
