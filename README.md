@@ -2,6 +2,14 @@
 
 JavaScript-client for building offline-capable web applications using the GroundFork synchronization framework.
 
+A typical implementation entails three abstractions:
+
+* storage,
+* api, and a
+* synchronization endpoint.
+
+Application resources are exposed over a RESTful interface.  
+
 #### Contrived example
 
 ```
@@ -20,13 +28,15 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
     clientSecret : 'demo'
 });
 
+var recipe = {
+   title       : 'Paneer Tikka Masala',
+   ingredients : ['Cottage Cheese', 'Lemon Juice', 'Ginger-Garlic Paste', 'Red Chili Powder']
+};
+
 api.command({
    method   : 'POST'
    resource : 'recipes'
-   payload  : {
-       title       : 'Paneer Tikka Masala',
-       ingredients : ['Cottage Cheese', 'Lemon Juice', 'Ginger-Garlic Paste', 'Red Chili Powder']
-   }
+   payload  : recipe
 });
 
 endpoint.sync(['target-node'], 
