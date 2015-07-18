@@ -13,7 +13,7 @@ var api = new GroundFork.Api({
 
 var endpoint = new GroundFork.BasicHttpEndpoint({
     api          : api,
-    url          : 'http://localhost:3333/',
+    url          : 'http://localhost:3333',
     clientKey    : 'root-user',
     clientSecret : 'password'
 });
