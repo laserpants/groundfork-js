@@ -2,9 +2,13 @@
 var $ = require('jquery');
 var UrlPattern = require('url-pattern');
 
+var _localStorage;
+
 if (typeof localStorage === 'undefined' || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
-    localStorage = new LocalStorage('./scratch');
+    _localStorage = new LocalStorage('./scratch');
+} else {
+    _localStorage = localStorage;
 }
 
 function extend() {
@@ -479,7 +483,7 @@ function BrowserStorage(config) {
 
 BrowserStorage.prototype.updateCollectionWith = function(key, update) {
     var _key = this.namespaced(key),
-        cached = localStorage.getItem(_key),
+        cached = _localStorage.getItem(_key),
         collection = {
             "_links": {
                 "self": {"href": key}
@@ -490,7 +494,7 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
     if (cached) 
         collection = parseWithDefault(cached, collection);
     update(collection);
-    localStorage.setItem(_key, JSON.stringify(collection));
+    _localStorage.setItem(_key, JSON.stringify(collection));
 };
 
 BrowserStorage.prototype.embed = function(obj, link) {
@@ -515,20 +519,20 @@ BrowserStorage.prototype.namespaced = function(str) {
 };
 
 BrowserStorage.prototype.insertItem = function(key, value) {
-    localStorage.setItem(this.namespaced(key), JSON.stringify(value));
+    _localStorage.setItem(this.namespaced(key), JSON.stringify(value));
 };
 
 BrowserStorage.prototype.getItem = function(key) {
-    var cached = localStorage.getItem(this.namespaced(key));
+    var cached = _localStorage.getItem(this.namespaced(key));
     return parseWithDefault(cached, null);
 };
 
 BrowserStorage.prototype.removeItem = function(key) {
-    localStorage.removeItem(this.namespaced(key));
+    _localStorage.removeItem(this.namespaced(key));
 };
 
 BrowserStorage.prototype.hasItem = function(key) {
-    return (null !== localStorage.getItem(this.namespaced(key)));
+    return (null !== _localStorage.getItem(this.namespaced(key)));
 };
 
 BrowserStorage.prototype.addToCollection = function(key, value, item) {
@@ -588,7 +592,7 @@ BrowserStorage.prototype.getSelfHref = function(obj) {
 BrowserStorage.prototype.keys = function() {
     var keys = [],
         len = this.namespace.length + 1;
-    for (var key in localStorage) {
+    for (var key in _localStorage) {
         if (0 == key.indexOf(this.namespace)) {
             keys.push(key.substr(len));
         }
