@@ -8,18 +8,14 @@ var store = new GroundFork.BrowserStorage({
 });
 
 var api = new GroundFork.Api({
-    storage            : store,
-    onBatchJobStart    : function() {},
-    onBatchJobComplete : function() {}
+    storage   : store
 });
 
 var endpoint = new GroundFork.BasicHttpEndpoint({
-    api                : api,
-    url                : 'http://localhost:3333/',
-    clientKey          : 'root-user',
-    clientSecret       : 'password',
-    onRequestStart     : function() {},
-    onRequestComplete  : function() {}
+    api          : api,
+    url          : 'http://localhost:3333/',
+    clientKey    : 'root-user',
+    clientSecret : 'password'
 });
 
 api.command({
@@ -46,14 +42,14 @@ var GroundFork = require('groundfork-js');
 
 ## Api
 
-|                     |   |   |   |   |
-|---------------------|---|---|---|---|
-| debugMode           |   |   |   |   |
-| patterns            |   |   |   |   |
-| storage             |   |   |   |   |
-| onBatchJobStart     |   |   |   |   |
-| onBatchJobComplete  |   |   |   |   |
-| interval            |   |   |   |   |
+|                     |           |           |   |   |
+|---------------------|-----------|-----------|---|---|
+| debugMode           |           |           |   |   |
+| patterns            |           |           |   |   |
+| storage             |           | required  |   |   |
+| onBatchJobStart     |           |           |   |   |
+| onBatchJobComplete  |           |           |   |   |
+| interval            |           |           |   |   |
 
 
 #### command (request)
