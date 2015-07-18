@@ -1,6 +1,6 @@
 # groundfork-js
 
-Synchronization framework for ground computing
+JavaScript-client for building offline-capable web applications using the GroundFork synchronization framework.
 
 > under construction
 
