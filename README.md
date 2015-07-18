@@ -10,6 +10,14 @@ A typical implementation entails three abstractions:
 
 Application resources are exposed through a client-side REST interface which encapsulates commands in a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices, when connectivity is available. 
 
+##### Endpoint
+
+The synchronization endpoint points to a running GroundFork Antenna (https://github.com/johanneshilden/groundfork-antenna-postgres) service.
+
+##### Storage
+
+The library contains a default storage backend for the browser's local storage object.
+
 #### Contrived example
 
 ```
