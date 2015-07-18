@@ -49,9 +49,9 @@ var store = new GroundFork.BrowserStorage({
 });
 ```
 
-|                     |    |          |        |   |   |
-|---------------------|----|----------|--------|---|---|
-| namespace           |    | required | string |   |   |
+| Property            | Default   | Required? | Type      |   |   |
+|---------------------|-----------|-----------|-----------|---|---|
+| namespace           |           | required  | string    |   |   |
 
 ## Api
 
