@@ -24,7 +24,7 @@ Application resources are exposed through a client-side REST interface which enc
 
 #### Contrived example
 
-```
+```javascript
 var store = new GroundFork.BrowserStorage({
     namespace : 'myApp'
 });
@@ -63,7 +63,7 @@ var GroundFork = require('groundfork-js');
 
 ## Storage
 
-```
+```javascript
 var store = new GroundFork.BrowserStorage({
     namespace: 'myApp'
 });
@@ -76,7 +76,7 @@ var store = new GroundFork.BrowserStorage({
 
 ## Api
 
-```
+```javascript
 var api = new GroundFork.Api(config);
 ```
 
@@ -105,7 +105,7 @@ var api = new GroundFork.Api(config);
 
 ## Endpoint
 
-```
+```javascript
 var endpoint = new GroundFork.BasicHttpEndpoint(config);
 ```
 
