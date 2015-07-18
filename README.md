@@ -68,6 +68,7 @@ var store = new GroundFork.BrowserStorage({
     namespace: 'myApp'
 });
 ```
+### Config keys
 
 | Property            | Default   | Required? | Type      |  Description  |
 |---------------------|-----------|-----------|-----------|----|
@@ -89,6 +90,8 @@ var api = new GroundFork.Api(config);
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
 | interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
+
+### Methods
 
 #### command (request)
 
@@ -118,5 +121,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 | syncSuffix          | 'sync'                  |           | string    |   |
 | url                 | 'http://localhost:3333' |           | string    |   |
 | requestHandler      |                         |           | function  | Default is to use jQuery's $.ajax api. Note that for node implementations, a different request handler must be provided. | 
+
+### Methods
 
 #### sync (target, onSuccess, onError, onProgress)
