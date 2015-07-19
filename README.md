@@ -152,7 +152,27 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 | `onRequestComplete`   |                         |           | function  |   |
 | `syncSuffix`          | 'sync'                  |           | string    |   |
 | `url`                 | 'http://localhost:3333' |           | string    |   |
-| `requestHandler`      |                         |           | function  | Default is to use jQuery's $.ajax api. Note that for node implementations, a different request handler must be provided. | 
+| `requestHandler`      | BasicHttpEndpoint.ajaxRequestHandler |           | function  | See below. | 
+
+### Request handler
+
+##### Available options:
+
+* `BasicHttpEndpoint.ajaxRequestHandler`
+* `BasicHttpEndpoint.nodeRequestHandler`
+
+Default is to use jQuery's $.ajax api. For node implementations, use BasicHttpEndpoint.nodeRequestHandler instead.
+
+##### Example:
+
+```javascript
+var endpoint = new GroundFork.BasicHttpEndpoint({
+    api            : api,
+    clientKey      : 'demo',
+    clientSecret   : 'demo', 
+    requestHandler : GroundFork.BasicHttpEndpoint.nodeRequestHandler
+});
+```
 
 ### Methods
 
