@@ -17,7 +17,7 @@ A typical implementation entails three parts:
 
 ##### Storage
 
-The device cache. The library contains a default backend, operating on the browser's local storage object. 
+The device cache. The library incorporates a default backend, operating on the browser's local storage object. 
 
 ##### Endpoint
 
