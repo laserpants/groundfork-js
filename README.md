@@ -93,7 +93,7 @@ var store = new GroundFork.BrowserStorage({
 
 | Property            | Default   | Required? | Type      |  Description  |
 |---------------------|-----------|-----------|-----------|----|
-| `namespace`           |           | required  | string    | A prefix used for local storage key names. |
+| namespace           |           | required  | string    | A prefix used for local storage key names. |
 
 ## Api
 
@@ -105,12 +105,12 @@ var api = new GroundFork.Api(config);
 
 | Property            | Default   | Required? | Type     | Description  |
 |---------------------|-----------|-----------|----------|---|
-| `debugMode`           | false     |           | boolean  | Enables logging of various debug data to the console. |
-| `patterns`            |           |           | object   |   |
-| `storage`             |           | required  | object   | A GroundFork.Storage instance. |
-| `onBatchJobStart`     |           |           | function |   |
-| `onBatchJobComplete`  |           |           | function |   |
-| `interval`            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
+| debugMode           | false     |           | boolean  | Enables logging of various debug data to the console. |
+| patterns            |           |           | object   |   |
+| storage             |           | required  | object   | A GroundFork.Storage instance. |
+| onBatchJobStart     |           |           | function |   |
+| onBatchJobComplete  |           |           | function |   |
+| interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
 
 ### Methods
 
@@ -145,14 +145,14 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 
 | Property            | Default                 | Required? | Type      | Description  |
 |---------------------|-------------------------|-----------|-----------|---|
-| `api`                 |                         | required  | object    |   |
-| `clientKey`           |                         | required  | string    |   |
-| `clientSecret`        |                         | required  | string    |   |
-| `onRequestStart`      |                         |           | function  |   |
-| `onRequestComplete`   |                         |           | function  |   |
-| `syncSuffix`          | 'sync'                  |           | string    |   |
-| `url`                 | 'http://localhost:3333' |           | string    |   |
-| `requestHandler`      | BasicHttpEndpoint.ajaxRequestHandler |           | function  | See below. | 
+| api                 |                         | required  | object    |   |
+| clientKey           |                         | required  | string    |   |
+| clientSecret        |                         | required  | string    |   |
+| onRequestStart      |                         |           | function  |   |
+| onRequestComplete   |                         |           | function  |   |
+| syncSuffix          | 'sync'                  |           | string    |   |
+| url                 | 'http://localhost:3333' |           | string    |   |
+| requestHandler      | BasicHttpEndpoint.ajaxRequestHandler |           | function  | See below. | 
 
 ### Request handler
 
