@@ -114,13 +114,18 @@ var api = new GroundFork.Api(config);
 
 ### Methods
 
-`command (request)`
+#### command (request)
 
-#### Convenience request methods
-
-`post ()`
-
-`post ()`
+> #### Convenience request methods
+> 
+> ##### post (resource, payload)
+> 
+> ##### put (resource, payload)
+> 
+> ##### patch (resource, payload)
+> 
+> ##### delete (resource)
+> 
 
 #### isBusy ()
 
