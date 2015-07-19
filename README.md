@@ -30,6 +30,10 @@ Application resources are exposed through a client-side REST interface which enc
 #### Contrived example
 
 ```javascript
+/*
+ * Initialization; only done once in the application.
+ */ 
+
 var store = new GroundFork.BrowserStorage({
     namespace : 'myApp'
 });
@@ -45,6 +49,11 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
     clientSecret : 'demo'
 });
 
+/*
+ * This is how you would interact with application resources. Here we create a new 'recipe'.
+ * It works the same whether the device is online or offline.
+ */ 
+
 var recipe = {
    title       : 'Paneer Tikka Masala',
    ingredients : ['Cottage Cheese', 'Lemon Juice', 'Ginger-Garlic Paste', 'Red Chili Powder']
@@ -55,6 +64,12 @@ api.command({
    resource : 'recipes'
    payload  : recipe
 });
+
+/*
+ * At any point, We can sync our local resources with other nodes. This requires a 
+ * Groundfork Antenna server to be set up and running. 'target-node' refers to another
+ * device registered with the service.
+ */ 
 
 endpoint.sync(['target-node'], 
     function onSuccess() { /* ... */ }, 
