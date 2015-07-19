@@ -11,7 +11,7 @@ var endpoint     = Test.endpoint;
 
 // ==================================================================================
 
-var ts = Date.now(),
+var ts = Date.now() / 1000 | 0,
     response;
 
 response = api.post('posts', {
