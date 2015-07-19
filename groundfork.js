@@ -1,6 +1,7 @@
 "use strict";
-var $ = require('jquery');
+var $          = require('jquery');
 var UrlPattern = require('url-pattern');
+var request    = require('request');
 
 var _localStorage;
 
@@ -46,6 +47,36 @@ function embedCollection(resource, collection) {
     collection['_embedded'][resource] = items;
 }
 
+function addToParent(linked, uri, resource) {
+    this.updateCollectionWith(linked, function(collection) {
+        if (!collection.hasOwnProperty('_links')) 
+            collection['_links'] = {};
+        collection['_links'][resource] = uri;
+        var item = this.getItem(uri);
+        if (item) {
+            if (!collection.hasOwnProperty('_embedded')) 
+                collection['_embedded'] = {};
+            var _item = {};
+            for (var key in item) {
+                if ('_embedded' !== key) 
+                    _item[key] = item[key];
+            }
+            collection['_embedded'][resource] = _item;
+        }
+    }.bind(this));
+}
+
+function removeFromParent(linked, resource) {
+    this.updateCollectionWith(linked, function(collection) {
+        if (collection.hasOwnProperty('_links')) {
+            delete collection['_links'][resource];
+        }
+        if (collection.hasOwnProperty('_embedded')) {
+            delete collection['_embedded'][resource];
+        }
+    });
+}
+
 var defaultPatterns = {
     "POST/:resource": function(context, request) {
         var payload = request.payload,
@@ -57,22 +88,7 @@ var defaultPatterns = {
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
         if ((linked = getLink(payload, '_parent'))) {
-            this.updateCollectionWith(linked, function(collection) {
-                if (!collection.hasOwnProperty('_links')) 
-                    collection['_links'] = {};
-                collection['_links'][context.resource] = uri;
-                var item = this.getItem(uri);
-                if (item) {
-                    if (!collection.hasOwnProperty('_embedded')) 
-                        collection['_embedded'] = {};
-                    var _item = {};
-                    for (var key in item) {
-                        if ('_embedded' !== key) 
-                            _item[key] = item[key];
-                    }
-                    collection['_embedded'][context.resource] = _item;
-                }
-            }.bind(this));
+            addToParent.call(this, linked, uri, context.resource);
         }
         this.addToCollection(context.resource, uri);
         return {
@@ -98,14 +114,7 @@ var defaultPatterns = {
             this.updateCollectionWith(linked, embedCollection.bind(this, context.resource));
         } 
         if ((linked = getLink(item, '_parent'))) {
-            this.updateCollectionWith(linked, function(collection) {
-                if (collection.hasOwnProperty('_links')) {
-                    delete collection['_links'][context.resource];
-                }
-                if (collection.hasOwnProperty('_embedded')) {
-                    delete collection['_embedded'][context.resource];
-                }
-            });
+            removeFromParent.call(this, linked, context.resource);
         }
         this.removeFromCollection(resource, key);
         return {
@@ -129,7 +138,30 @@ var defaultPatterns = {
             restore[attr] = item[attr];
             item[attr] = request.payload[attr];
         }
+        if (!item.hasOwnProperty('_links')) 
+            item['_links'] = {};
+        item['_links']['self'] = { "href": getSelfHref(restore) };
         this.insertItem(key, item);
+        var oldLinked = getLink(restore, '_collection');
+        var newLinked = getLink(item, '_collection');
+        if (oldLinked !== newLinked) {
+            if (oldLinked) {
+                this.removeFromCollection(oldLinked, key, context.resource);
+                this.updateCollectionWith(oldLinked, embedCollection.bind(this, context.resource));
+            }
+            if (newLinked) {
+                this.addToCollection(newLinked, key, context.resource);
+                this.updateCollectionWith(newLinked, embedCollection.bind(this, context.resource));
+            }
+        }
+        oldLinked = getLink(restore, '_parent');
+        newLinked = getLink(item, '_parent');
+        if (oldLinked !== newLinked) {
+            if (oldLinked) 
+                removeFromParent.call(this, oldLinked, context.resource);
+            if (newLinked) 
+                addToParent.call(this, newLinked, key, context.resource);
+        }
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
             "data"   : restore
@@ -145,7 +177,30 @@ var defaultPatterns = {
                 "resource" : key 
             };
         }
+        if (!request.payload.hasOwnProperty('_links')) 
+            request.payload['_links'] = {};
+        request.payload['_links']['self'] = { "href": getSelfHref(item) };
         this.insertItem(key, request.payload);
+        var oldLinked = getLink(item, '_collection');
+        var newLinked = getLink(request.payload, '_collection');
+        if (oldLinked !== newLinked) {
+            if (oldLinked) {
+                this.removeFromCollection(oldLinked, key, context.resource);
+                this.updateCollectionWith(oldLinked, embedCollection.bind(this, context.resource));
+            }
+            if (newLinked) {
+                this.addToCollection(newLinked, key, context.resource);
+                this.updateCollectionWith(newLinked, embedCollection.bind(this, context.resource));
+            }
+        }
+        oldLinked = getLink(item, '_parent');
+        newLinked = getLink(request.payload, '_parent');
+        if (oldLinked !== newLinked) {
+            if (oldLinked) 
+                removeFromParent.call(this, oldLinked, context.resource);
+            if (newLinked) 
+                addToParent.call(this, newLinked, key, context.resource);
+        }
         return {
             "status" : ApiResponse.TYPE_SUCCESS,
             "data"   : item
@@ -450,6 +505,41 @@ Api.prototype.command = function(request) {
     return response;
 };
 
+Api.prototype.post = function(resource, payload) {
+    var response = this.command({
+        "method"   : 'POST',
+        "resource" : resource,
+        "payload"  : payload
+    });
+    if (response.status === ApiResponse.TYPE_SUCCESS) {
+        response.id = getSelfHref(response.data);
+    }
+    return response;
+};
+
+Api.prototype.delete = function(resource) {
+    return this.command({
+        "method"   : 'DELETE',
+        "resource" : resource
+    });
+};
+
+Api.prototype.patch = function(resource, payload) {
+    return this.command({
+        "method"   : 'PATCH',
+        "resource" : resource,
+        "payload"  : payload
+    });
+};
+
+Api.prototype.put = function(resource, payload) {
+    return this.command({
+        "method"   : 'PUT',
+        "resource" : resource,
+        "payload"  : payload
+    });
+};
+
 Api.prototype.isBusy = function() {
     return this._busyStatus;
 };
@@ -629,20 +719,6 @@ function decorate(obj, items) {
     }
 }
 
-function defaultRequestHandler(data, onSuccess, onError) {
-    $.support.cors = true;
-    $.ajax({
-        url: this._url + '/' + this._syncSuffix,
-        type: 'POST',
-        headers: {
-            "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
-        },
-        data: JSON.stringify(data),
-        error: onError,
-        success: onSuccess
-    });
-}
-
 function BasicHttpEndpoint(config) {
 
     if (!config) {
@@ -682,7 +758,7 @@ function BasicHttpEndpoint(config) {
     if ('function' === typeof config.requestHandler) {
         this._requestHandler = config.requestHandler;
     } else {
-        this._requestHandler = defaultRequestHandler;
+        this._requestHandler = BasicHttpEndpoint.ajaxRequestHandler;
     }
 
 }
@@ -745,6 +821,34 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
         }.bind(this)
     );
     return true;
+}
+
+BasicHttpEndpoint.ajaxRequestHandler = function(data, onSuccess, onError) {
+    $.support.cors = true;
+    $.ajax({
+        url: this._url + '/' + this._syncSuffix,
+        type: 'POST',
+        headers: {
+            "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
+        },
+        data: JSON.stringify(data),
+        error: onError,
+        success: onSuccess
+    });
+}
+
+BasicHttpEndpoint.nodeRequestHandler = function(data, onSuccess, onError) {
+    request.post({
+        url: this._url + '/' + this._syncSuffix,
+        body: data,
+        json: true
+    }, function(err, httpResponse, resp) {
+        if (err) {
+            onError(err);
+        } else {
+            onSuccess(resp);
+        }
+    }.bind(this)).auth(this._clientKey, this._clientSecret, true);
 }
 
 module.exports = {
