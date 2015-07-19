@@ -4,11 +4,16 @@ JavaScript-client for GroundFork -- a synchronization framework for creating off
 
 > under construction
 
+##### Use cases: 
+
+1. a SPA running in a browser or browser-like environment where local storage is used for device-local persistence.
+2. ?
+
 A typical implementation entails three parts:
 
-* storage,
+* a storage,
 * a synchronization endpoint, and the
-* api.
+* offline api.
 
 ##### Storage
 
