@@ -107,7 +107,7 @@ var api = new GroundFork.Api(config);
 |---------------------|-----------|-----------|----------|---|
 | debugMode           | false     |           | boolean  | Enables logging of various debug data to the console. |
 | patterns            |           |           | object   |   |
-| storage             |           | required  | object   | A GroundFork.Storage instance. |
+| storage             |           | required  | object   | A `GroundFork.Storage` instance. |
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
 | interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
@@ -152,7 +152,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 | onRequestComplete   |                         |           | function  |   |
 | syncSuffix          | 'sync'                  |           | string    |   |
 | url                 | 'http://localhost:3333' |           | string    |   |
-| requestHandler      | BasicHttpEndpoint.ajaxRequestHandler |           | function  | See below. | 
+| requestHandler      | `BasicHttpEndpoint.ajaxRequestHandler` |           | function  | See below. | 
 
 ### Request handler
 
@@ -161,7 +161,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 * `BasicHttpEndpoint.ajaxRequestHandler`
 * `BasicHttpEndpoint.nodeRequestHandler`
 
-Default is to use jQuery's $.ajax api. For node implementations, use BasicHttpEndpoint.nodeRequestHandler instead.
+Default is to use jQuery's `$.ajax` api. For node implementations, use `BasicHttpEndpoint.nodeRequestHandler` instead.
 
 ##### Example:
 
