@@ -51,8 +51,8 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
 });
 
 /*
- * This is how you would interact with application resources. Here we create a new 'recipe'.
- * It works the same whether the device is online or offline.
+ * This is how you would interact with application resources. Here we create a new 
+ * 'recipe'. The process is the same whether the device is online or offline.
  */ 
 
 var recipe = {
