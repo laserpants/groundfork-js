@@ -24,8 +24,8 @@ function extend() {
 }
 
 var ApiResponse = {
-    TYPE_SUCCESS: 'success',
-    TYPE_ERROR: 'error'
+    TYPE_SUCCESS : 'success',
+    TYPE_ERROR   : 'error'
 };
 
 function embedCollection(resource, collection) {
