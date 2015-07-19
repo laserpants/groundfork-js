@@ -512,11 +512,16 @@ BrowserStorage.prototype.embed = function(obj, link) {
             embedCollection.call(this, link, obj);
         } else {
             var item = this.getItem(target.href);
+            if (!obj.hasOwnProperty('_embedded')) {
+                obj['_embedded'] = {};
+            }
             if (item) {
-                if (!obj.hasOwnProperty('_embedded'))
-                    obj['_embedded'] = {};
-                item['_embedded'] = {};
-                obj['_embedded'][link] = item;
+                var _item = {};
+                for (var key in item) {
+                    if ('_embedded' !== key) 
+                        _item[key] = item[key];
+                }
+                obj['_embedded'][link] = _item;
             }
         }
     }
