@@ -707,7 +707,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
             timestamp : log[i].timestamp
         };
         if ('POST' == obj.up.method)
-            items.push(obj.up.payload['_links']['self']['href']);
+            items.push(getSelfHref(obj.up.payload));
         decorate(obj.up, items);
         decorate(obj.down, items);
         data.commit.push(obj);
