@@ -147,7 +147,7 @@ var comment = {
 };
 
 api.post('comments', comment, {
-    collection: myFirstPost             // cons this comment to the post's array of links
+    collection: myFirstPost             // cons this comment to the post's comments
 });
 ```
 
