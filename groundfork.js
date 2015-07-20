@@ -292,6 +292,8 @@ Api.prototype._route = function(request, store) {
                 setSelfHref(request.payload, store.firstAvailableKey(request.resource));
             }
             var response = route.method.call(store, context, request);
+            if (!response)
+                continue;
             if (response.status === ApiResponse.TYPE_ERROR) {
                 if (true == this._debugMode) {
                     console.log(response);

@@ -68,6 +68,8 @@ Test.assert(
     'Parent post has no link to comment.'
 );
 
+console.log(api.log());
+
 //
 
 /* ---------- Offline operations ---------- */
