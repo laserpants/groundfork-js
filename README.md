@@ -69,7 +69,7 @@ api.command({
 /* or equivalently; api.post('recipes', recipe);  */
 
 /*
- * At any point, We can sync our local resources with other nodes. This requires a 
+ * At any point, We can sync our local timeline with other nodes. This requires a 
  * Groundfork Antenna server to be set up and running. 'target-node' refers to another
  * device registered with the service.
  */ 
