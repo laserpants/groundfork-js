@@ -133,14 +133,16 @@ var defaultPatterns = {
                 "resource" : key 
             };
         }
-        var restore = {};
+        var restore = {},
+            selfHref = getSelfHref(item);
         for (var attr in request.payload) {
             restore[attr] = item[attr];
             item[attr] = request.payload[attr];
         }
         if (!item.hasOwnProperty('_links')) 
             item['_links'] = {};
-        item['_links']['self'] = { "href": getSelfHref(restore) };
+        if (selfHref && !item['_links'].hasOwnProperty('self'))
+            item['_links']['self'] = { "href": selfHref };
         this.insertItem(key, item);
         var oldLinked = getLink(restore, '_collection');
         var newLinked = getLink(item, '_collection');
