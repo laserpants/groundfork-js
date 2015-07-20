@@ -505,7 +505,17 @@ Api.prototype.command = function(request) {
     return response;
 };
 
-Api.prototype.post = function(resource, payload) {
+Api.prototype.post = function(resource, payload, options) {
+    if (options && payload) {
+        if (!payload.hasOwnProperty('_links')) 
+            payload['_links'] = {};
+        if (options.hasOwnProperty('collection')) {
+            payload['_links']['_collection'] = { 'href': options['collection'] };
+        }
+        if (options.hasOwnProperty('parent')) {
+             payload['_links']['_parent'] = { 'href': options['parent'] };
+        }
+    }
     var response = this.command({
         "method"   : 'POST',
         "resource" : resource,
@@ -532,7 +542,17 @@ Api.prototype.patch = function(resource, payload) {
     });
 };
 
-Api.prototype.put = function(resource, payload) {
+Api.prototype.put = function(resource, payload, options) {
+    if (options && payload) {
+        if (!payload.hasOwnProperty('_links')) 
+            payload['_links'] = {};
+        if (options.hasOwnProperty('collection')) {
+            payload['_links']['_collection'] = { 'href': options['collection'] };
+        }
+        if (options.hasOwnProperty('parent')) {
+             payload['_links']['_parent'] = { 'href': options['parent'] };
+        }
+    }
     return this.command({
         "method"   : 'PUT',
         "resource" : resource,

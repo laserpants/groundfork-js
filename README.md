@@ -117,15 +117,25 @@ var api = new GroundFork.Api(config);
 #### command (request)
 
 > #### Convenience request methods
-> 
-> ##### post (resource, payload)
-> 
-> ##### put (resource, payload)
-> 
-> ##### patch (resource, payload)
-> 
-> ##### delete (resource)
-> 
+
+##### post (resource, payload, options)
+
+###### Example:
+
+```
+var comment = {
+    contents : 'Cool story, bro!'
+    created  : Date.now() / 1000 | 0
+};
+api.post('comments', comment, {collection: 'posts/1'});
+```
+
+##### put (resource, payload, options)
+
+##### patch (resource, payload)
+
+##### delete (resource)
+
 
 #### isBusy ()
 

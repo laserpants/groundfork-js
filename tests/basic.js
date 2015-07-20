@@ -45,17 +45,27 @@ Test.assert(
 // ==================================================================================
 
 response = api.post('comments', {
-    'body'    : 'Great story, dude!',
-    'created' : ts,
-    '_links'  : {
-        '_collection' : { 'href': firstPostId }
-    }
+        'body'    : 'Great story, dude!',
+        'created' : ts
+    }, 
+    { 
+        'collection' : firstPostId 
 });
+
+var firstCommentId = response.id;
 
 Test.assert(
     '2.1', 
     'success' === response.status, 
     'Expected response status "success", instead got "' + response.status + '"'
+);
+
+var parentPost = store.getItem(firstPostId); 
+
+Test.assert(
+    '2.2', 
+    firstCommentId === parentPost['_links']['comments'][0].href, 
+    'Parent post has no link to comment.'
 );
 
 //
