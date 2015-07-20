@@ -130,7 +130,7 @@ var api = new GroundFork.Api(config);
 
 ###### Example:
 
-```
+```javascript
 var post = {
    title  : 'My first post',
    body   : 'You are in the house. You can see an altar and a painting of a dragon on the far wall.'
