@@ -167,9 +167,9 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 | clientSecret        |                         | required  | string    |   |
 | onRequestStart      |                         |           | function  |   |
 | onRequestComplete   |                         |           | function  |   |
-| syncSuffix          | 'sync'                  |           | string    |   |
-| url                 | 'http://localhost:3333' |           | string    |   |
-| requestHandler      | `BasicHttpEndpoint.ajaxRequestHandler` |           | function  | See below. | 
+| syncSuffix          | `'sync'`                  |           | string    |   |
+| url                 | `'http://localhost:3333'` |           | string    |   |
+| requestHandler      | `ajaxRequestHandler` |           | function  | See below. | 
 
 ### Request handler
 
