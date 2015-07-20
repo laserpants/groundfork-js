@@ -31,6 +31,8 @@ Application resources are exposed through a client-side REST interface which enc
 #### Contrived example
 
 ```javascript
+var GroundFork = require('./groundfork');
+
 /*
  * Initialization; only done once in the application.
  */ 
@@ -74,14 +76,7 @@ api.command({
  * device registered with the service.
  */ 
 
-endpoint.sync(['target-node'], 
-    function onSuccess() { /* ... */ }, 
-    function onError(err) { /* ... */ });
-
-```
-
-```
-var GroundFork = require('groundfork-js');
+endpoint.sync(['target-node']);
 ```
 
 ## Storage
