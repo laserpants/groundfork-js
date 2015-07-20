@@ -66,6 +66,8 @@ api.command({
    payload  : recipe
 });
 
+/* or equivalently; api.post('recipes', recipe);  */
+
 /*
  * At any point, We can sync our local resources with other nodes. This requires a 
  * Groundfork Antenna server to be set up and running. 'target-node' refers to another
