@@ -18,7 +18,7 @@ A typical implementation entails three parts:
 
 ##### Storage
 
-The device cache. The library incorporates a default backend, operating on the browser's local storage object. 
+The device cache. The included, default backend uses the browser's local storage object. 
 
 ##### Endpoint
 
@@ -31,6 +31,8 @@ Application resources are exposed through a client-side REST interface which enc
 #### Contrived example
 
 ```javascript
+var GroundFork = require('./groundfork');
+
 /*
  * Initialization; only done once in the application.
  */ 
@@ -74,14 +76,7 @@ api.command({
  * device registered with the service.
  */ 
 
-endpoint.sync(['target-node'], 
-    function onSuccess() { /* ... */ }, 
-    function onError(err) { /* ... */ });
-
-```
-
-```
-var GroundFork = require('groundfork-js');
+endpoint.sync(['target-node']);
 ```
 
 ## Storage
@@ -122,7 +117,7 @@ var api = new GroundFork.Api(config);
 
 #### syncPoint ()
 
-#### setSyncPoint (ts)
+#### setSyncPoint (timestamp)
 
 #### log ()
 
@@ -142,12 +137,12 @@ var response = api.post('posts', post);
 var myFirstPost = response.id;          // == 'posts/1'
 
 var comment = {
-    contents : 'Cool story, bro!'
+    contents : 'Cool story, bro!',
     created  : Date.now() / 1000 | 0
 };
 
 api.post('comments', comment, {
-    collection: myFirstPost             // cons this comment to the post's array of links
+    collection: myFirstPost             // cons this comment to the post's comments
 });
 ```
 
