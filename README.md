@@ -142,7 +142,7 @@ var response = api.post('posts', post);
 var myFirstPost = response.id;          // == 'posts/1'
 
 var comment = {
-    contents : 'Cool story, bro!'
+    contents : 'Cool story, bro!',
     created  : Date.now() / 1000 | 0
 };
 
