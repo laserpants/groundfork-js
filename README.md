@@ -117,7 +117,7 @@ var api = new GroundFork.Api(config);
 
 #### syncPoint ()
 
-#### setSyncPoint (ts)
+#### setSyncPoint (timestamp)
 
 #### log ()
 
