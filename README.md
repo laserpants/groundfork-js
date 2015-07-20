@@ -116,27 +116,6 @@ var api = new GroundFork.Api(config);
 
 #### command (request)
 
-> #### Convenience request methods
-
-##### post (resource, payload, options)
-
-###### Example:
-
-```
-var comment = {
-    contents : 'Cool story, bro!'
-    created  : Date.now() / 1000 | 0
-};
-api.post('comments', comment, {collection: 'posts/1'});
-```
-
-##### put (resource, payload, options)
-
-##### patch (resource, payload)
-
-##### delete (resource)
-
-
 #### isBusy ()
 
 #### syncPoint ()
@@ -144,6 +123,37 @@ api.post('comments', comment, {collection: 'posts/1'});
 #### setSyncPoint (ts)
 
 #### log ()
+
+> #### Convenience request methods
+
+#### post (resource, payload, options)
+
+###### Example:
+
+```
+var post = {
+   title  : 'My first post',
+   body   : 'You are in the house. You can see an altar and a painting of a dragon on the far wall.'
+};
+
+var response = api.post('posts', post);
+var myFirstPost = response.id;          // == 'posts/1'
+
+var comment = {
+    contents : 'Cool story, bro!'
+    created  : Date.now() / 1000 | 0
+};
+
+api.post('comments', comment, {
+    collection: myFirstPost             // insert this comment to the post's array of links
+});
+```
+
+#### put (resource, payload, options)
+
+#### patch (resource, payload)
+
+#### delete (resource)
 
 ## Endpoint
 
