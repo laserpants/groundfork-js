@@ -141,7 +141,7 @@ var defaultPatterns = {
         }
         if (!item.hasOwnProperty('_links')) 
             item['_links'] = {};
-        if (selfHref && !item['_links'].hasOwnProperty('self'))
+        if (selfHref)
             item['_links']['self'] = { "href": selfHref };
         this.insertItem(key, item);
         var oldLinked = getLink(restore, '_collection');
