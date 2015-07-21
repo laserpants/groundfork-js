@@ -51,7 +51,9 @@ function addToParent(linked, uri, resource) {
     this.updateCollectionWith(linked, function(collection) {
         if (!collection.hasOwnProperty('_links')) 
             collection['_links'] = {};
-        collection['_links'][resource] = uri;
+        collection['_links'][resource] = {
+            'href': uri
+        };
         var item = this.getItem(uri);
         if (item) {
             if (!collection.hasOwnProperty('_embedded')) 
