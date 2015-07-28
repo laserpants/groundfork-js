@@ -821,10 +821,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
     var _request = {
         url     : this._url + '/' + this._syncSuffix,
         type    : 'POST',
-        data    : JSON.stringify(data),
-        headers : {
-            "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
-        }
+        data    : JSON.stringify(data)
     };
     requestHandler(_request, 
         function(resp) {
@@ -895,7 +892,9 @@ BasicHttpEndpoint.ajaxRequestHandler = function(request, onSuccess, onError) {
     var ajax = {
         url     : request.url,
         type    : request.type,
-        headers : request.headers,
+        headers : {
+            "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
+        },
         error   : onError,
         success : onSuccess
     };
@@ -905,14 +904,14 @@ BasicHttpEndpoint.ajaxRequestHandler = function(request, onSuccess, onError) {
     $.ajax(ajax);
 }
 
-BasicHttpEndpoint.nodeRequestHandler = function(request, onSuccess, onError) {
+BasicHttpEndpoint.nodeRequestHandler = function(_request, onSuccess, onError) {
     var obj = {
-        url    : request.url,
-        method : request.type,
+        url    : _request.url,
+        method : _request.type,
         json   : true
     };
-    if (request.data) {
-        obj.body = request.data;
+    if (_request.data) {
+        obj.body = _request.data;
     }
     request(obj, function(err, httpResponse, resp) {
         if (err) {
