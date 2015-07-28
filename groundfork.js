@@ -818,7 +818,15 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
         this._onRequestStart(); 
     }
     var requestHandler = this._requestHandler.bind(this);
-    requestHandler(data, 
+    var _request = {
+        url     : this._url + '/' + this._syncSuffix,
+        type    : 'POST',
+        data    : JSON.stringify(data),
+        headers : {
+            "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
+        }
+    };
+    requestHandler(_request, 
         function(resp) {
             if (this._onRequestComplete) {
                 this._onRequestComplete(); 
@@ -849,26 +857,64 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
     return true;
 }
 
-BasicHttpEndpoint.ajaxRequestHandler = function(data, onSuccess, onError) {
-    $.support.cors = true;
-    $.ajax({
-        url: this._url + '/' + this._syncSuffix,
-        type: 'POST',
-        headers: {
+BasicHttpEndpoint.prototype.syncPoint = function(onSuccess, onError) {
+    if (true == this._device.isBusy()) {
+        return false;
+    }
+    if (this._onRequestStart) {
+        this._onRequestStart(); 
+    }
+    var requestHandler = this._requestHandler.bind(this);
+    var _request = {
+        url     : this._url + '/sp',
+        type    : 'GET',
+        headers : {
             "Authorization": "Basic " + btoa(this._clientKey + ':' + this._clientSecret)
-        },
-        data: JSON.stringify(data),
-        error: onError,
-        success: onSuccess
-    });
+        }
+    };
+    requestHandler(_request, 
+        function(resp) {
+            if (this._onRequestComplete) {
+                this._onRequestComplete(); 
+            }
+            onSuccess(resp.body)
+        }.bind(this), 
+        function(e) {
+            if ('function' === typeof onError) {
+                onError(e);
+            }
+            if (this._onRequestComplete) {
+                this._onRequestComplete(); 
+            }
+        }.bind(this)
+    );
 }
 
-BasicHttpEndpoint.nodeRequestHandler = function(data, onSuccess, onError) {
-    request.post({
-        url: this._url + '/' + this._syncSuffix,
-        body: data,
-        json: true
-    }, function(err, httpResponse, resp) {
+BasicHttpEndpoint.ajaxRequestHandler = function(request, onSuccess, onError) {
+    $.support.cors = true;
+    var ajax = {
+        url     : request.url,
+        type    : request.type,
+        headers : request.headers,
+        error   : onError,
+        success : onSuccess
+    };
+    if (request.data) {
+        ajax.data = request.data;
+    }
+    $.ajax(ajax);
+}
+
+BasicHttpEndpoint.nodeRequestHandler = function(request, onSuccess, onError) {
+    var obj = {
+        url    : request.url,
+        method : request.type,
+        json   : true
+    };
+    if (request.data) {
+        obj.body = request.data;
+    }
+    request(obj, function(err, httpResponse, resp) {
         if (err) {
             onError(err);
         } else {
