@@ -821,7 +821,7 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
     var _request = {
         url     : this._url + '/' + this._syncSuffix,
         type    : 'POST',
-        data    : JSON.stringify(data)
+        data    : data
     };
     requestHandler(_request, 
         function(resp) {
@@ -899,7 +899,7 @@ BasicHttpEndpoint.ajaxRequestHandler = function(request, onSuccess, onError) {
         success : onSuccess
     };
     if (request.data) {
-        ajax.data = request.data;
+        ajax.data = JSON.stringify(request.data);
     }
     $.ajax(ajax);
 }
