@@ -2,8 +2,6 @@
 
 JavaScript-client for GroundFork -- a synchronization framework for creating offline-capable web applications.
 
-> under construction
-
 ##### Use cases: 
 
 1. SPAs running in a browser or browser-like environment where local storage is used for device-local persistence.
