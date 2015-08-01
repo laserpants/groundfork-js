@@ -92,6 +92,7 @@ var store = new GroundFork.BrowserStorage({
 | Property            | Default   | Required? | Type      |  Description  |
 |---------------------|-----------|-----------|-----------|----|
 | namespace           |           | required  | string    | A prefix used for local storage key names. |
+| useCompression      | true      |           | boolean   | Data is stored in compressed format. (Local storage is limited to 5MB in most browsers.) |
 
 ## Api
 
@@ -108,6 +109,7 @@ var api = new GroundFork.Api(config);
 | storage             |           | required  | object   | A `GroundFork.Storage` instance. |
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
+| useProxy            | true      |           | boolean  | If true, local data is copied to memory during batch operations for better performance. |
 | interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
 
 ##### Overriding route patterns
