@@ -721,9 +721,19 @@ BrowserStorage.prototype.getSelfHref = function(obj) {
 BrowserStorage.prototype.keys = function() {
     var keys = [],
         len = this.namespace.length + 1;
-    for (var key in _localStorage) {
-        if (0 == key.indexOf(this.namespace)) {
-            keys.push(key.substr(len));
+    if (typeof localStorage === 'undefined' || localStorage === null) {
+        var storageKeys = _localStorage.keys;
+        for (var i = 0; i < storageKeys.length; i++) {
+            var key = storageKeys[i];
+            if (0 == key.indexOf(this.namespace)) {
+                keys.push(key.substr(len));
+            }
+        }
+    } else {
+        for (var key in _localStorage) {
+            if (0 == key.indexOf(this.namespace)) {
+                keys.push(key.substr(len));
+            }
         }
     }
     return keys;
