@@ -135,7 +135,7 @@ var api = new GroundFork.Api({
 
 ##### log ()
 
-> ##### Convenience request methods
+#### Convenience request methods
 
 ##### post (resource, payload, options)
 
