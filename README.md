@@ -20,7 +20,7 @@ A device cache. The default backend uses the browser's local storage object.
 
 ##### Endpoint
 
-Points to a running [GroundFork Antenna](https://github.com/johanneshilden/groundfork-antenna-postgres) service. The endpoint manages replication and synchronization.
+Points to a running [GroundFork Antenna](https://github.com/johanneshilden/groundfork-antenna-postgres) service. The server handles replication and synchronization.
 
 ##### Api
 
@@ -60,7 +60,7 @@ var recipe = {
    ingredients : ['Cottage Cheese', 'Lemon Juice', 'Ginger-Garlic Paste', 'Red Chili Powder']
 };
 
-api.command({
+var response = api.command({
    method   : 'POST'
    resource : 'recipes'
    payload  : recipe
