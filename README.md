@@ -192,7 +192,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 * `BasicHttpEndpoint.ajaxRequestHandler`
 * `BasicHttpEndpoint.nodeRequestHandler`
 
-Default is to use jQuery's `$.ajax` api. For node implementations, use `BasicHttpEndpoint.nodeRequestHandler` instead.
+Default is to use jQuery's `$.ajax` api. For node.js implementations, use `BasicHttpEndpoint.nodeRequestHandler` instead.
 
 ##### Example:
 
