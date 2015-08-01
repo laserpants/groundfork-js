@@ -79,13 +79,13 @@ endpoint.sync(['target-node']);
 
 ## Storage
 
+### BrowserStorage
+
 ```javascript
 var store = new GroundFork.BrowserStorage({
     namespace: 'myApp'
 });
 ```
-
-### BrowserStorage
 
 #### Config keys
 
