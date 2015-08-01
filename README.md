@@ -11,8 +11,8 @@ JavaScript-client for GroundFork -- a synchronization framework for creating off
 A typical implementation entails three parts:
 
 * a storage,
-* a synchronization endpoint, and the
-* offline api.
+* a synchronization endpoint, and 
+* the offline api.
 
 ##### Storage
 
