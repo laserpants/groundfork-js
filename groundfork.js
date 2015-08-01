@@ -239,6 +239,7 @@ function Api(config) {
     this._messageLog         = [];
     this._debugMode          = false;
     this._interval           = 15;
+    this._useProxy           = true;
 
     if (config) {
         if (true === config.debugMode) {
@@ -258,6 +259,9 @@ function Api(config) {
         }
         if ('number' === typeof config.interval) {
             this._interval = config.interval;
+        }
+        if ('boolean' === typeof config.useProxy) {
+            this._useProxy = config.useProxy;
         }
     }
 
@@ -400,7 +404,7 @@ StorageProxy.prototype.deploy = function() {
     var keys = this._storage.keys();
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (!this._data.hasOwnProperty(key) && key.indexOf('_') != 0) {
+        if (!this._data.hasOwnProperty(key) && key.indexOf('_') !== 0) {
             this._storage.removeItem(key);
         }
     }
@@ -469,15 +473,22 @@ Api.prototype.batchRun = function(batch, onComplete, onProgress) {
     if (this._onBatchJobStart) {
         this._onBatchJobStart(); 
     }
-    var messages = [],
-        memstore = new StorageProxy(this._storage),
-        len = batch.length;
+    if (true === this._debugMode) {
+        console.log(JSON.stringify(batch, null, 3));
+    }
+    var messages = [];
+    var memstore = (true === this._useProxy 
+            && typeof localStorage !== 'undefined' 
+            && localStorage !== null) ? new StorageProxy(this._storage) : null;
+            // Only use storage proxy in browser environments
+    var len = batch.length;
     var processOne = function() {
         if ('function' === typeof onProgress) {
             onProgress(len-batch.length, len);
         }
         if (!batch.length) {
-            memstore.deploy();
+            if (memstore)
+                memstore.deploy();
             this._busyStatus = false;
             if (this._onBatchJobComplete) {
                 this._onBatchJobComplete(); 
@@ -490,7 +501,7 @@ Api.prototype.batchRun = function(batch, onComplete, onProgress) {
         if (true == this._debugMode)
             console.log('<' + batch.length + '>');
         var req = batch[0],
-            response = this._route(req, memstore);
+            response = this._route(req, memstore ? memstore : this._storage);
         if (true == this._debugMode)
             console.log(response);
         if (response.status === ApiResponse.TYPE_ERROR) {
@@ -927,7 +938,11 @@ BasicHttpEndpoint.nodeRequestHandler = function(_request, onSuccess, onError) {
         if (err) {
             onError(err);
         } else {
-            onSuccess(resp);
+            if (('' + httpResponse.statusCode).match(/^2\d\d$/)) {
+                onSuccess(resp);
+            } else {
+                onError(httpResponse);
+            }
         }
     }.bind(this)).auth(this._clientKey, this._clientSecret, true);
 }
