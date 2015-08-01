@@ -110,7 +110,7 @@ var api = new GroundFork.Api(config);
 | onBatchJobStart     |           |           | function |   |
 | onBatchJobComplete  |           |           | function |   |
 | useProxy            | true      |           | boolean  | If true, local data is copied to memory during batch operations for better performance. |
-| interval            | 15        |           | number   | A timeout interval used to avoid busy looping during sync batch jobs. |
+| interval            | 15        |           | number   | A timeout interval used to avoid busy looping during post-sync batch jobs. |
 
 ##### Overriding route patterns
 
