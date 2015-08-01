@@ -84,7 +84,10 @@ var store = new GroundFork.BrowserStorage({
     namespace: 'myApp'
 });
 ```
-### Config keys
+
+### BrowserStorage
+
+#### Config keys
 
 | Property            | Default   | Required? | Type      |  Description  |
 |---------------------|-----------|-----------|-----------|----|
@@ -96,7 +99,7 @@ var store = new GroundFork.BrowserStorage({
 var api = new GroundFork.Api(config);
 ```
 
-### Config keys
+#### Config keys
 
 | Property            | Default   | Required? | Type     | Description  |
 |---------------------|-----------|-----------|----------|---|
@@ -120,21 +123,21 @@ var api = new GroundFork.Api({
 });
 ```
 
-### Methods
+#### Methods
 
-#### command (request)
+##### command (request)
 
-#### isBusy ()
+##### isBusy ()
 
-#### syncPoint ()
+##### syncPoint ()
 
-#### setSyncPoint (timestamp)
+##### setSyncPoint (timestamp)
 
-#### log ()
+##### log ()
 
-> #### Convenience request methods
+> ##### Convenience request methods
 
-#### post (resource, payload, options)
+##### post (resource, payload, options)
 
 ###### Example:
 
@@ -157,11 +160,11 @@ api.post('comments', comment, {
 });
 ```
 
-#### put (resource, payload, options)
+##### put (resource, payload, options)
 
-#### patch (resource, payload)
+##### patch (resource, payload)
 
-#### delete (resource)
+##### delete (resource)
 
 ## Endpoint
 
@@ -169,7 +172,7 @@ api.post('comments', comment, {
 var endpoint = new GroundFork.BasicHttpEndpoint(config);
 ```
 
-### Config keys
+#### Config keys
 
 | Property            | Default                 | Required? | Type      | Description  |
 |---------------------|-------------------------|-----------|-----------|---|
@@ -182,7 +185,7 @@ var endpoint = new GroundFork.BasicHttpEndpoint(config);
 | url                 | `'http://localhost:3333'` |           | string    |   |
 | requestHandler      | `ajaxRequestHandler` |           | function  | See below. | 
 
-### Request handler
+#### Request handler
 
 ##### Available options:
 
@@ -202,6 +205,6 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
 });
 ```
 
-### Methods
+#### Methods
 
-#### sync (target, onSuccess, onError, onProgress)
+##### sync (target, onSuccess, onError, onProgress)
