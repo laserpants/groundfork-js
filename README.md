@@ -112,7 +112,7 @@ var api = new GroundFork.Api(config);
 
 ##### Overriding route patterns
 
-```
+```javascript
 var api = new GroundFork.Api({
     storage  : store,
     patterns : {
