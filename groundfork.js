@@ -2,6 +2,7 @@
 var $          = require('jquery');
 var UrlPattern = require('url-pattern');
 var request    = require('request');
+var LZString   = require('lz-string');
 
 var _localStorage;
 
@@ -611,8 +612,14 @@ function BrowserStorage(config) {
     if (!config) {
         throw 'No configuration object provided.';
     }
+
+    this._useCompression = true;
+
     if ('string' === typeof config.namespace) {
         this.namespace = config.namespace;
+    }
+    if ('boolean' === typeof config.useCompression) {
+        this._useCompression = config.useCompression;
     }
 }
 
@@ -626,10 +633,12 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
             "count": 0
         };
     collection['_links'][key] = [];
-    if (cached) 
-        collection = parseWithDefault(cached, collection);
+    if (cached) {
+        collection = parseWithDefault(true === this._useCompression ?  LZString.decompress(cached) : cached, collection);
+    }
     update(collection);
-    _localStorage.setItem(_key, JSON.stringify(collection));
+    var value = JSON.stringify(collection);
+    _localStorage.setItem(_key, true === this._useCompression ? LZString.compress(value) : value);
 };
 
 BrowserStorage.prototype.embed = function(obj, link) {
@@ -659,12 +668,13 @@ BrowserStorage.prototype.namespaced = function(str) {
 };
 
 BrowserStorage.prototype.insertItem = function(key, value) {
-    _localStorage.setItem(this.namespaced(key), JSON.stringify(value));
+    var str = JSON.stringify(value);
+    _localStorage.setItem(this.namespaced(key), true === this._useCompression ? LZString.compress(str) : str);
 };
 
 BrowserStorage.prototype.getItem = function(key) {
     var cached = _localStorage.getItem(this.namespaced(key));
-    return parseWithDefault(cached, null);
+    return parseWithDefault(true === this._useCompression ?  LZString.decompress(cached) : cached, null);
 };
 
 BrowserStorage.prototype.removeItem = function(key) {
