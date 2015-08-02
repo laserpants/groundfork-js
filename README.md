@@ -24,7 +24,7 @@ Points to a running [GroundFork Antenna](https://github.com/johanneshilden/groun
 
 ##### Api
 
-Application resources are exposed through a client-side REST interface which encapsulates commands into a format suitable for logging. Resources are stored on the device for subsequent synchronization with other devices. 
+Application resources are exposed through a client-side REST interface. Commands are encapsulated in a format suitable for logging ([https://sourcemaking.com/design_patterns/command](command pattern)) and resources are stored on the device for subsequent synchronization with other devices. 
 
 #### Contrived example
 
@@ -51,8 +51,9 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
 });
 
 /*
- * This is how you would interact with application resources. Here we create a new 
- * 'recipe'. The process is the same whether the device is online or offline.
+ * This is how you would interact with application resources. In this example, we 
+ * create a new 'recipe'. Nothing is commited to the server, so there is no network 
+ * activity involved.
  */ 
 
 var recipe = {
@@ -70,8 +71,8 @@ var response = api.command({
 
 /*
  * At any point, We can sync our local timeline with other nodes. This requires a 
- * Groundfork Antenna server to be set up and running. 'target-node' refers to another
- * device registered with the service.
+ * Groundfork Antenna server to be set up and running. 'target-node' refers to a
+ * device registered with the service. (A device may sync against yourself.)
  */ 
 
 endpoint.sync(['target-node']);
