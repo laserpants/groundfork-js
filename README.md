@@ -24,7 +24,7 @@ Points to a running [GroundFork Antenna](https://github.com/johanneshilden/groun
 
 ##### Api
 
-Application resources are exposed through a client-side REST interface. Commands are encapsulated in a format suitable for logging ([https://sourcemaking.com/design_patterns/command](command pattern)) and resources are stored on the device for subsequent synchronization with other devices. 
+Application resources are exposed through a client-side REST interface. Commands are encapsulated in a format suitable for logging ([command pattern](https://sourcemaking.com/design_patterns/command)) and resources are stored on the device for subsequent synchronization with other devices. 
 
 #### Contrived example
 
