@@ -72,7 +72,7 @@ var response = api.command({
 /*
  * At any point, We can sync our local timeline with other nodes. This requires a 
  * Groundfork Antenna server to be set up and running. 'target-node' refers to a
- * device registered with the service. (A device may sync against yourself.)
+ * device registered with the service. (A device may sync against itself.)
  */ 
 
 endpoint.sync(['target-node']);
