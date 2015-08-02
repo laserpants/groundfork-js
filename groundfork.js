@@ -820,7 +820,7 @@ function BasicHttpEndpoint(config) {
 
 }
 
-BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgress) {
+BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgress, debugScript) {
     if (true == this._device.isBusy()) {
         return false;
     }
@@ -866,6 +866,9 @@ BasicHttpEndpoint.prototype.sync = function(targets, onSuccess, onError, onProgr
                 script.unshift(log[i].down);
             for (var i = size; i < log.length; i++) 
                 script.push(log[i].up);
+            if ('function' === typeof debugScript) {
+                debugScript(script);
+            }
             this._device.batchRun(script, function(messages) {
                 if ('function' === typeof onSuccess) {
                     onSuccess(messages, resp);
