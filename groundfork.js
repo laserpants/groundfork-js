@@ -605,7 +605,7 @@ function parseWithDefault(data, _default, useCompression) {
         if (true === useCompression) {
             var decompressed = LZString.decompress(data);
             if (!decompressed || 'null' === decompressed) {
-                console.log('parseWithDefault: LZString.decompress returned ' + decompressed + '.');
+                console.log('parseWithDefault: LZString.decompress returned ' + ('string' === typeof decompressed ? decompressed : JSON.stringify(decompressed)) + '.');
                 return _default;
             }
             return JSON.parse(decompressed);
