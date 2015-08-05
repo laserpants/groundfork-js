@@ -212,3 +212,5 @@ var endpoint = new GroundFork.BasicHttpEndpoint({
 #### Methods
 
 ##### sync (target, onSuccess, onError, onProgress)
+
+##### syncPoint ()
