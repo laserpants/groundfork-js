@@ -600,8 +600,16 @@ Api.prototype.takeLog = function(items) {
     return log;
 }
 
-function parseWithDefault(data, _default) {
+function parseWithDefault(data, _default, useCompression) {
     try {
+        if (true === useCompression) {
+            var decompressed = LZString.decompress(data);
+            if (!decompressed || 'null' === decompressed) {
+                console.log('parseWithDefault: LZString.decompress returned ' + decompressed + '.');
+                return _default;
+            }
+            return JSON.parse(decompressed);
+        } 
         return JSON.parse(data);
     } catch (e) {
         return _default;
@@ -634,7 +642,7 @@ BrowserStorage.prototype.updateCollectionWith = function(key, update) {
         };
     collection['_links'][key] = [];
     if (cached) {
-        collection = parseWithDefault(true === this._useCompression ?  LZString.decompress(cached) : cached, collection);
+        collection = parseWithDefault(cached, collection, this._useCompression);
     }
     update(collection);
     var value = JSON.stringify(collection);
@@ -674,7 +682,7 @@ BrowserStorage.prototype.insertItem = function(key, value) {
 
 BrowserStorage.prototype.getItem = function(key) {
     var cached = _localStorage.getItem(this.namespaced(key));
-    return parseWithDefault(true === this._useCompression ?  LZString.decompress(cached) : cached, null);
+    return parseWithDefault(cached, null, this._useCompression);
 };
 
 BrowserStorage.prototype.removeItem = function(key) {
