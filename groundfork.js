@@ -604,8 +604,8 @@ function parseWithDefault(data, _default, useCompression) {
     try {
         if (true === useCompression) {
             var decompressed = LZString.decompress(data);
-            if (!decompressed || 'null' === decompressed) {
-                console.log('parseWithDefault: LZString.decompress returned ' + ('string' === typeof decompressed ? decompressed : JSON.stringify(decompressed)) + '.');
+            if ('null' === decompressed) {
+                console.log('parseWithDefault: LZString.decompress returned "null".');
                 return _default;
             }
             return JSON.parse(decompressed);
@@ -614,7 +614,7 @@ function parseWithDefault(data, _default, useCompression) {
     } catch (e) {
         return _default;
     }
-};
+}
 
 function BrowserStorage(config) {
     if (!config) {
