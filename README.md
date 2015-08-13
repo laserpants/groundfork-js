@@ -1,6 +1,6 @@
 # groundfork-js
 
-JavaScript-client for GroundFork -- a synchronization framework for creating offline-capable web applications.
+JavaScript-client for GroundFork -- a synchronization framework for offline-capable web applications.
 
 ##### Use cases: 
 
