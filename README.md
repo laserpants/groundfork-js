@@ -170,6 +170,10 @@ api.post('comments', comment, {
 
 ##### delete (resource)
 
+#### Transactions
+
+@todo
+
 ## Endpoint
 
 ```javascript
