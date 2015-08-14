@@ -32,6 +32,10 @@ var ApiResponse = {
 function embedCollection(resource, collection) {
     var links = collection['_links'][resource],
         items = [];
+    if (!links) {
+        console.log('embedCollection: Collection has no link to resource \'' + resource + '\'.');
+        return;
+    }
     for (var i = 0; i < links.length; i++) {
         var item = this.getItem(links[i].href);
         if (item) {
@@ -521,6 +525,38 @@ Api.prototype.command = function(request) {
         this.pushToLog(response);
     }
     return response;
+};
+
+Api.prototype.run = function(transaction, overrideBusy) {
+    if (true == this._busyStatus && !overrideBusy) {
+        return { 
+            "status"   : ApiResponse.TYPE_ERROR,
+            "_error"   : "DEVICE_BUSY"
+        };
+    }
+    var log = [];
+    for (var i = 0; i < transaction.length; i++) {
+        var response = this._route(transaction[i]);
+        if (response.status === ApiResponse.TYPE_SUCCESS) {
+            log.push(response);
+        } else {
+            // Rollback
+            var j = log.length;
+            while (j) {
+                --j;
+                this._route(log[j].command.down);
+            }
+            return response;
+        }
+    }
+    // Commit
+    for (var i = 0; i < log.length; i++) {
+        this.pushToLog(log[i]);
+    }
+    return { 
+        "status" : ApiResponse.TYPE_SUCCESS,
+        "log"    : log
+    };
 };
 
 Api.prototype.post = function(resource, payload, options) {
