@@ -531,9 +531,7 @@ Api.prototype.batchRun = function(batch, onComplete, onProgress) {
             response = this._route(req, memstore ? memstore : this._storage);
         if (true == this._debugMode)
             console.log(response);
-        if (response.status === ApiResponse.TYPE_ERROR) {
-            messages.push(response);
-        }
+        messages.push(response);
         batch = batch.slice(1);
         setTimeout(processOne, this._interval);
     }.bind(this);
