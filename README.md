@@ -170,11 +170,13 @@ api.post('comments', comment, {
 
 ##### delete (resource)
 
+<!--
 #### Transactions
 
 ##### run (transaction, [overrideBusy])
 
 Takes an array of commands and runs them in sequence, as one atomic operation. If any of the commands in the sequence fails, the operation will roll back and return `false`.
+-->
 
 ## Endpoint
 
